@@ -1,14 +1,23 @@
-import { Button } from "./components/ui/button";
-import "./index.css";
+import { createClient } from '@supabase/supabase-js'
+import { Button } from './components/ui/button'
 
-export function App() {
+function App() {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+  const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+  const supabase = createClient(supabaseUrl, supabaseKey)
+
+  const getTeams = async () => {
+    const { data, error } = await supabase.from('Teams').select()
+
+    console.log(data)
+    console.log(error)
+  }
+
   return (
-    <div className="container mx-auto p-8 text-center relative z-10">
-      <div className="flex justify-center items-center gap-8 mb-8">
-      <Button>Hello</Button>
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-svh">
+      <Button onClick={() => getTeams()}>Click me</Button>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
