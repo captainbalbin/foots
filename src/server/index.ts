@@ -21,10 +21,10 @@ app.get('/api/teams', async (c) => {
   return c.json(data)
 })
 
-app.get('api/team/:team', async (c) => {
-  const team = c.req.param('team')
+app.get('api/team/:teamId', async (c) => {
+  const teamId = c.req.param('teamId')
 
-  const { data, error } = await supabase.from('Teams').select().eq('id', team)
+  const { data, error } = await supabase.from('Teams').select().eq('id', teamId)
 
   if (error) {
     console.error(error.message)
@@ -33,6 +33,34 @@ app.get('api/team/:team', async (c) => {
   }
 
   return c.json(data)
+})
+
+app.put('api/team/:teamId/activate', async (c) => {
+  const teamId = c.req.param('teamId')
+
+  console.log('teamId', teamId)
+
+  const { error: deactivateError } = await supabase
+    .from('Teams')
+    .update({ active: false })
+    .neq('id', teamId) // TODO: Fix the update field not being changed
+
+  if (deactivateError) {
+    console.error(deactivateError.message)
+    return c.json({ error: deactivateError.message }, 500)
+  }
+
+  const { error: activateError } = await supabase
+    .from('Teams')
+    .update({ active: true })
+    .eq('id', teamId)
+
+  if (activateError) {
+    console.error(activateError.message)
+    return c.json({ error: activateError.message }, 500)
+  }
+
+  return c.json({ message: 'Team updated successfully' })
 })
 
 Bun.serve({
