@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun --bun vite",
-    "server": "bun run ./src/server/index.ts",
+    "server": "bun run --hot ./src/server/index.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write .",
