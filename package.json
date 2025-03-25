@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun --bun vite",
+    "server": "bun run ./src/server/index.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -14,8 +15,10 @@
     "@radix-ui/react-slot": "^1.1.2",
     "@supabase/supabase-js": "^2.49.2",
     "@tailwindcss/vite": "^4.0.15",
+    "@tanstack/react-query": "^5.69.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "hono": "^4.7.5",
     "lucide-react": "^0.483.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -25,6 +28,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@types/bun": "^1.2.5",
     "@types/node": "^22.13.13",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
