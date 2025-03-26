@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { createClient } from '@supabase/supabase-js'
+import { Database } from './supabase'
 
 const app = new Hono()
 
@@ -8,10 +9,10 @@ app.use('*', cors())
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
 app.get('/api/teams', async (c) => {
-  const { data, error } = await supabase.from('Teams').select()
+  const { data, error } = await supabase.from('teams').select()
 
   if (error) {
     console.error(error.message)
@@ -22,9 +23,9 @@ app.get('/api/teams', async (c) => {
 })
 
 app.get('api/team/:teamId', async (c) => {
-  const teamId = c.req.param('teamId')
+  const teamId = Number(c.req.param('teamId'))
 
-  const { data, error } = await supabase.from('Teams').select().eq('id', teamId)
+  const { data, error } = await supabase.from('teams').select().eq('id', teamId)
 
   if (error) {
     console.error(error.message)
@@ -36,14 +37,12 @@ app.get('api/team/:teamId', async (c) => {
 })
 
 app.put('api/team/:teamId/activate', async (c) => {
-  const teamId = c.req.param('teamId')
-
-  console.log('teamId', teamId)
+  const teamId = Number(c.req.param('teamId'))
 
   const { error: deactivateError } = await supabase
-    .from('Teams')
+    .from('teams')
     .update({ active: false })
-    .neq('id', teamId) // TODO: Fix the update field not being changed
+    .neq('id', teamId)
 
   if (deactivateError) {
     console.error(deactivateError.message)
@@ -51,7 +50,7 @@ app.put('api/team/:teamId/activate', async (c) => {
   }
 
   const { error: activateError } = await supabase
-    .from('Teams')
+    .from('teams')
     .update({ active: true })
     .eq('id', teamId)
 

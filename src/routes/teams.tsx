@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
+import { Loader2 } from 'lucide-react'
 
 export const Route = createFileRoute('/teams')({
   component: RouteComponent,
@@ -14,6 +16,8 @@ type Team = {
 }
 
 function RouteComponent() {
+  const queryClient = useQueryClient()
+
   const { data, isPending, error } = useQuery({
     queryKey: ['teams'],
     queryFn: async () => {
@@ -23,6 +27,7 @@ function RouteComponent() {
       }
       return await res.json()
     },
+    refetchOnWindowFocus: false,
   })
 
   const {
@@ -30,7 +35,7 @@ function RouteComponent() {
     error: mutationError,
     isPending: mutationPending,
   } = useMutation({
-    mutationKey: ['teams', 'active'],
+    mutationKey: ['teams', 'activate'],
     mutationFn: async (id: string) => {
       const res = await fetch(`http://localhost:3000/api/team/${id}/activate`, {
         method: 'PUT',
@@ -41,37 +46,43 @@ function RouteComponent() {
       return await res.json()
     },
     onSuccess: () => {
-      console.log('Team activated successfully')
+      queryClient.invalidateQueries({ queryKey: ['teams'] }) // Invalidate the 'teams' query to refetch data
     },
     onError: (error: Error) => {
       console.error('Error activating team:', error.message)
     },
   })
 
-  if (mutationError) return <div>Mutation error: {mutationError.message}</div>
-
-  if (mutationPending) return <div>Activating team...</div>
-
-  if (isPending) return <div>loading teams...</div>
-
-  if (error) return <div>Fetching error: {error.message}</div>
-
   const handleClick = (id: string) => {
     mutate(id)
   }
 
+  console.log('isLoading', isPending)
+
+  if (mutationError) return <div>Mutation error: {mutationError.message}</div>
+  if (isPending) return <div>loading teams...</div>
+  if (error) return <div>Fetching error: {error.message}</div>
+
   return (
     <div>
-      {data.map((team: Team) => {
-        return (
-          <div>
-            <p>{team.name}</p>
-            <Button disabled={team.active} onClick={() => handleClick(team.id)}>
-              {team.active ? 'Active' : 'Make active'}
-            </Button>
-          </div>
-        )
-      })}
+      {data
+        .sort((a: Team, b: Team) => parseInt(a.id) - parseInt(b.id))
+        .map((team: Team) => {
+          return (
+            <div key={team.id}>
+              <p>{team.name}</p>
+              {!team.active && (
+                <Button
+                  disabled={mutationPending}
+                  onClick={() => handleClick(team.id)}
+                >
+                  {mutationPending && <Loader2 className="animate-spin" />}
+                  Make active
+                </Button>
+              )}
+            </div>
+          )
+        })}
     </div>
   )
 }
