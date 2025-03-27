@@ -36,6 +36,20 @@ app.get('api/team/:teamId', async (c) => {
   return c.json(data)
 })
 
+app.post('api/teams', async (c) => {
+  const newTeam = await c.req.json()
+
+  const { data, error } = await supabase.from('teams').insert({name: newTeam.name })
+
+  if (error) {
+    console.error(error.message)
+
+    return c.json({ error: error.message }, 500)
+  }
+
+  return c.json(data)
+})
+
 app.put('api/team/:teamId/activate', async (c) => {
   const teamId = Number(c.req.param('teamId'))
 
@@ -60,6 +74,15 @@ app.put('api/team/:teamId/activate', async (c) => {
   }
 
   return c.json({ message: 'Team updated successfully' })
+})
+
+app.get('/api/players', async (c) => {
+  const { data, error } = await supabase.from('players').select()
+  if (error) {
+    console.error(error.message)
+    return c.json({ error: error.message }, 500)
+  }
+  return c.json(data)
 })
 
 Bun.serve({
