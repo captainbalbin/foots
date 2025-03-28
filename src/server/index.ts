@@ -22,7 +22,7 @@ app.get('/api/teams', async (c) => {
   return c.json(data)
 })
 
-app.get('api/team/:teamId', async (c) => {
+app.get('api/teams/:teamId', async (c) => {
   const teamId = Number(c.req.param('teamId'))
 
   const { data, error } = await supabase.from('teams').select().eq('id', teamId)
@@ -39,7 +39,9 @@ app.get('api/team/:teamId', async (c) => {
 app.post('api/teams', async (c) => {
   const newTeam = await c.req.json()
 
-  const { data, error } = await supabase.from('teams').insert({name: newTeam.name })
+  const { data, error } = await supabase
+    .from('teams')
+    .insert({ name: newTeam.name })
 
   if (error) {
     console.error(error.message)
@@ -50,7 +52,7 @@ app.post('api/teams', async (c) => {
   return c.json(data)
 })
 
-app.put('api/team/:teamId/activate', async (c) => {
+app.put('api/teams/:teamId/activate', async (c) => {
   const teamId = Number(c.req.param('teamId'))
 
   const { error: deactivateError } = await supabase
