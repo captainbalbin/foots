@@ -101,6 +101,21 @@ app.post('api/players', async (c) => {
   return c.json(data)
 })
 
+app.delete('api/players/:playerId', async (c) => {
+  const playerId = Number(c.req.param('playerId'))
+  const { data, error } = await supabase
+    .from('players')
+    .delete()
+    .eq('id', playerId)
+
+  if (error) {
+    console.error(error.message)
+    return c.json({ error: error.message }, 500)
+  }
+
+  return c.json(data)
+})
+
 Bun.serve({
   fetch(req) {
     return app.fetch(req)

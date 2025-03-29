@@ -35,3 +35,19 @@ export const createPlayerQueryOptions = {
   mutationKey: ['players', 'create'],
   mutationFn: (player: NewPlayer) => createPlayer(player),
 }
+
+const deletePlayer = async (id: number) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok')
+  }
+  return response.json()
+}
+
+export const deletePlayerQueryOptions = {
+  mutationKey: ['players', 'delete'],
+  mutationFn: (id: number) => deletePlayer(id),
+}
