@@ -1,4 +1,3 @@
-import { AddTeam } from '@/features/teams/addTeam'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
@@ -6,5 +5,5 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
-  return <AddTeam />
+  return <>Home</>
 }
