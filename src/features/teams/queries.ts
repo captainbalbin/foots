@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import { NewTeam } from '../types'
+import { NewTeam } from './types'
 
 const API_URL = 'http://localhost:3000/api'
 

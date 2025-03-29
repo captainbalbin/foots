@@ -1,8 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import {
-  activateTeamQueryOptions,
-  teamsQueryOptions,
-} from './queryUtils/queries'
+import { activateTeamQueryOptions, teamsQueryOptions } from './queries'
 
 export const useActivateTeam = () => {
   const queryClient = useQueryClient()
