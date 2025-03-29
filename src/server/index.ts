@@ -11,7 +11,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
-app.get('/api/teams', async (c) => {
+app.get('api/teams', async (c) => {
   const { data, error } = await supabase.from('teams').select()
 
   if (error) {
@@ -25,7 +25,11 @@ app.get('/api/teams', async (c) => {
 app.get('api/teams/:teamId', async (c) => {
   const teamId = Number(c.req.param('teamId'))
 
-  const { data, error } = await supabase.from('teams').select().eq('id', teamId)
+  const { data, error } = await supabase
+    .from('teams')
+    .select()
+    .eq('id', teamId)
+    .single()
 
   if (error) {
     console.error(error.message)
@@ -106,7 +110,7 @@ app.put('api/teams/:teamId/activate', async (c) => {
   return c.json({ message: 'Team updated successfully' })
 })
 
-app.get('/api/players', async (c) => {
+app.get('api/players', async (c) => {
   const { data, error } = await supabase.from('players').select()
   if (error) {
     console.error(error.message)

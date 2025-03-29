@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import { NewTeam } from './types'
+import { NewTeam, Team } from './types'
 
 const API_URL = 'http://localhost:3000/api'
 
@@ -19,6 +19,7 @@ export const teamsQueryOptions = queryOptions({
   queryKey: ['teams'],
   queryFn: () => getTeams(),
   refetchOnWindowFocus: false,
+  staleTime: 1000 * 60 * 5, // 5 minutes
 })
 
 /* Active team */
@@ -39,6 +40,25 @@ export const activateTeamQueryOptions = {
   mutationKey: ['teams', 'activate'],
   mutationFn: (id: number) => activateTeam(id),
 }
+
+const getTeam = async (id: number) => {
+  const res = await fetch(`${API_URL}/teams/${id}`)
+
+  if (!res.ok) {
+    const error = await res.json()
+    throw new Error(error.error)
+  }
+
+  return (await res.json()) as Team
+}
+
+export const teamQueryOptions = (id: number) =>
+  queryOptions({
+    queryKey: ['teams', 'active', id],
+    queryFn: () => getTeam(id),
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  })
 
 /* Create team */
 const createTeamFn = async (team: NewTeam) => {
