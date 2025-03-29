@@ -87,6 +87,20 @@ app.get('/api/players', async (c) => {
   return c.json(data)
 })
 
+app.post('api/players', async (c) => {
+  const newPlayer = await c.req.json()
+
+  const { data, error } = await supabase.from('players').insert(newPlayer)
+
+  if (error) {
+    console.error(error.message)
+
+    return c.json({ error: error.message }, 500)
+  }
+
+  return c.json(data)
+})
+
 Bun.serve({
   fetch(req) {
     return app.fetch(req)

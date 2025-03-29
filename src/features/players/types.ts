@@ -6,3 +6,5 @@ export type Player = {
   potential_raing: number
   team: number | null
 }
+
+export type NewPlayer = Omit<Player, 'id'>
