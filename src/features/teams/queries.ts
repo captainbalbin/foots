@@ -19,7 +19,7 @@ export const teamsQueryOptions = queryOptions({
 })
 
 /* Active team */
-const activateTeam = async (id: string) => {
+const activateTeam = async (id: number) => {
   const res = await fetch(`${API_URL}/teams/${id}/activate`, {
     method: 'PUT',
   })
@@ -31,11 +31,10 @@ const activateTeam = async (id: string) => {
 
 export const activateTeamQueryOptions = {
   mutationKey: ['teams', 'activate'],
-  mutationFn: (id: string) => activateTeam(id),
+  mutationFn: (id: number) => activateTeam(id),
 }
 
 /* Create team */
-
 const createTeamFn = async (team: NewTeam) => {
   const response = await fetch(`${API_URL}/teams`, {
     method: 'POST',
@@ -54,4 +53,18 @@ const createTeamFn = async (team: NewTeam) => {
 export const createTeamQueryOptions = {
   mutationKey: ['teams', 'create'],
   mutationFn: (team: NewTeam) => createTeamFn(team),
+}
+
+/* Delete team */
+const deleteTeam = async (id: number) => {
+  const response = await fetch(`${API_URL}/teams/${id}`, {
+    method: 'DELETE',
+  })
+
+  return response.json()
+}
+
+export const deleteTeamQueryOptions = {
+  mutationKey: ['teams', 'delete'],
+  mutationFn: (id: number) => deleteTeam(id),
 }

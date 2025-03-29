@@ -36,6 +36,34 @@ app.get('api/teams/:teamId', async (c) => {
   return c.json(data)
 })
 
+app.delete('api/teams/:teamId', async (c) => {
+  const teamId = Number(c.req.param('teamId'))
+
+  const { data: team, error: fetchError } = await supabase
+    .from('teams')
+    .select('active')
+    .eq('id', teamId)
+    .single()
+
+  if (fetchError) {
+    console.error(fetchError.message)
+    return c.json({ error: fetchError.message }, 500)
+  }
+
+  if (team?.active) {
+    return c.json({ error: 'Cannot delete an active team' }, 400)
+  }
+
+  const { data, error } = await supabase.from('teams').delete().eq('id', teamId)
+
+  if (error) {
+    console.error(error.message)
+    return c.json({ error: error.message }, 500)
+  }
+
+  return c.json(data)
+})
+
 app.post('api/teams', async (c) => {
   const newTeam = await c.req.json()
 

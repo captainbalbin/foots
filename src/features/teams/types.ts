@@ -1,5 +1,5 @@
 export type Team = {
-  id: string
+  id: number
   name: string
   createdAt: string
   active: boolean
