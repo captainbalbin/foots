@@ -5,9 +5,12 @@ const API_URL = 'http://localhost:3000/api/players'
 
 const getPlayers = async () => {
   const response = await fetch(API_URL)
+
   if (!response.ok) {
-    throw new Error('Network response was not ok')
+    const error = await response.json()
+    throw new Error(error.error)
   }
+
   return response.json()
 }
 
@@ -26,8 +29,10 @@ const createPlayer = async (player: NewPlayer) => {
   })
 
   if (!response.ok) {
-    throw new Error('Network response was not ok')
+    const error = await response.json()
+    throw new Error(error.error)
   }
+
   return response.json()
 }
 
@@ -42,7 +47,8 @@ const deletePlayer = async (id: number) => {
   })
 
   if (!response.ok) {
-    throw new Error('Network response was not ok')
+    const error = await response.json()
+    throw new Error(error.error)
   }
   return response.json()
 }

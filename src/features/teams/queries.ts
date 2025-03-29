@@ -6,9 +6,12 @@ const API_URL = 'http://localhost:3000/api'
 /* Get all teams */
 export const getTeams = async () => {
   const res = await fetch(`${API_URL}/teams`)
+
   if (!res.ok) {
-    throw new Error('Network response was not ok')
+    const error = await res.json()
+    throw new Error(error.error)
   }
+
   return await res.json()
 }
 
@@ -23,9 +26,12 @@ const activateTeam = async (id: number) => {
   const res = await fetch(`${API_URL}/teams/${id}/activate`, {
     method: 'PUT',
   })
+
   if (!res.ok) {
-    throw new Error('Failed to activate team')
+    const error = await res.json()
+    throw new Error(error.error)
   }
+
   return await res.json()
 }
 
@@ -36,7 +42,7 @@ export const activateTeamQueryOptions = {
 
 /* Create team */
 const createTeamFn = async (team: NewTeam) => {
-  const response = await fetch(`${API_URL}/teams`, {
+  const res = await fetch(`${API_URL}/teams`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -44,10 +50,12 @@ const createTeamFn = async (team: NewTeam) => {
     body: JSON.stringify(team),
   })
 
-  if (!response.ok) {
-    throw new Error('Network response was not ok')
+  if (!res.ok) {
+    const error = await res.json()
+    throw new Error(error.error)
   }
-  return response.json()
+
+  return res.json()
 }
 
 export const createTeamQueryOptions = {
@@ -57,11 +65,16 @@ export const createTeamQueryOptions = {
 
 /* Delete team */
 const deleteTeam = async (id: number) => {
-  const response = await fetch(`${API_URL}/teams/${id}`, {
+  const res = await fetch(`${API_URL}/teams/${id}`, {
     method: 'DELETE',
   })
 
-  return response.json()
+  if (!res.ok) {
+    const error = await res.json()
+    throw new Error(error.error)
+  }
+
+  return res.json()
 }
 
 export const deleteTeamQueryOptions = {

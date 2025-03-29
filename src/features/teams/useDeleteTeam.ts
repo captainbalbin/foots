@@ -10,7 +10,7 @@ export const useDeleteTeam = () => {
       queryClient.invalidateQueries({ queryKey: teamsQueryOptions.queryKey })
     },
     onError: (error) => {
-      console.error('Error deleting player:', error)
+      console.error('Error deleting team:', error)
     },
   })
 
