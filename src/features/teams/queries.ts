@@ -1,5 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { NewTeam, Team } from './types'
+import { Player } from '../players/types'
 
 const API_URL = 'http://localhost:3000/api'
 
@@ -54,8 +55,27 @@ const getTeam = async (id: number) => {
 
 export const teamQueryOptions = (id: number) =>
   queryOptions({
-    queryKey: ['teams', 'active', id],
+    queryKey: ['teams', id],
     queryFn: () => getTeam(id),
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  })
+
+const getPlayersByTeam = async (teamId?: number) => {
+  const res = await fetch(`${API_URL}/teams/${teamId}/players`)
+
+  if (!res.ok) {
+    const error = await res.json()
+    throw new Error(error.error)
+  }
+
+  return (await res.json()) as Player[]
+}
+
+export const teamPlayersQueryOptions = (teamId?: number) =>
+  queryOptions({
+    queryKey: ['teams', teamId, 'players'],
+    queryFn: () => getPlayersByTeam(teamId),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
   })

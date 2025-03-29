@@ -40,6 +40,23 @@ app.get('api/teams/:teamId', async (c) => {
   return c.json(data)
 })
 
+app.get('api/teams/:teamId/players', async (c) => {
+  const teamId = Number(c.req.param('teamId'))
+
+  const { data, error } = await supabase
+    .from('players')
+    .select()
+    .eq('team', teamId)
+
+  if (error) {
+    console.error(error.message)
+
+    return c.json({ error: error.message }, 500)
+  }
+
+  return c.json(data)
+})
+
 app.delete('api/teams/:teamId', async (c) => {
   const teamId = Number(c.req.param('teamId'))
 

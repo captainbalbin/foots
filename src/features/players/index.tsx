@@ -22,7 +22,7 @@ export const Players = () => {
       firstname: 'John',
       lastname: 'Doe',
       overall_rating: 85,
-      potential_raing: 90,
+      potential_rating: 90,
       team: null,
     }
 
@@ -43,7 +43,7 @@ export const Players = () => {
               {player.firstname} {player.lastname}
             </h3>
             <p>Overall Rating: {player.overall_rating}</p>
-            <p>Potential Rating: {player.potential_raing}</p>
+            <p>Potential Rating: {player.potential_rating}</p>
             <p>Team: {player.team}</p>
             <Button onClick={() => handleDeletePlayer(player.id)}>
               Delete Player

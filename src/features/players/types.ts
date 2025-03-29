@@ -3,7 +3,7 @@ export type Player = {
   firstname: string
   lastname: string
   overall_rating: number
-  potential_raing: number
+  potential_rating: number
   team: number | null
 }
 

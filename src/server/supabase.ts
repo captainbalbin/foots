@@ -41,7 +41,7 @@ export type Database = {
           id: number
           lastname: string
           overall_rating: number
-          potential_raing: number
+          potential_rating: number
           team: number | null
         }
         Insert: {
@@ -50,7 +50,7 @@ export type Database = {
           id?: number
           lastname: string
           overall_rating: number
-          potential_raing: number
+          potential_rating: number
           team?: number | null
         }
         Update: {
@@ -59,7 +59,7 @@ export type Database = {
           id?: number
           lastname?: string
           overall_rating?: number
-          potential_raing?: number
+          potential_rating?: number
           team?: number | null
         }
         Relationships: [
