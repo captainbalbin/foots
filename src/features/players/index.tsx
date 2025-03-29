@@ -1,28 +1,19 @@
-import { useQuery } from '@tanstack/react-query'
 import { Player as PlayerType } from './types'
+import { usePlayers } from './usePlayers'
 
 export const Players = () => {
-  const { data, error, isLoading } = useQuery({
-    queryKey: ['players'],
-    queryFn: async () => {
-      const response = await fetch('http://localhost:3000/api/players')
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      return response.json()
-    },
-  })
+  const { players, playersError, playersLoading } = usePlayers()
 
-  if (isLoading) {
+  if (playersLoading) {
     return <div>Loading...</div>
   }
-  if (error) {
-    return <div>Error: {error.message}</div>
+  if (playersError) {
+    return <div>playersError: {playersError.message}</div>
   }
 
   return (
     <div>
-      {data?.map((player: PlayerType) => {
+      {players?.map((player: PlayerType) => {
         return (
           <div key={player.id}>
             <h3>
