@@ -36,30 +36,66 @@ export type Database = {
     Tables: {
       players: {
         Row: {
+          age: number
+          base_market_value: number
+          base_rating: number
+          contract_length: number
+          contract_role: Database['public']['Enums']['roles'] | null
           created_at: string
-          firstname: string | null
+          current_market_value: number
+          current_rating: number
+          first_name: string | null
           id: number
-          lastname: string
+          last_name: string
+          loaned_in: boolean
+          loaned_out: boolean
           overall_rating: number
+          position: Database['public']['Enums']['positions'][] | null
           potential_rating: number
+          release_clause: number | null
+          salary: number
           team: number | null
         }
         Insert: {
+          age?: number
+          base_market_value?: number
+          base_rating?: number
+          contract_length?: number
+          contract_role?: Database['public']['Enums']['roles'] | null
           created_at?: string
-          firstname?: string | null
+          current_market_value?: number
+          current_rating?: number
+          first_name?: string | null
           id?: number
-          lastname: string
+          last_name: string
+          loaned_in?: boolean
+          loaned_out?: boolean
           overall_rating: number
+          position?: Database['public']['Enums']['positions'][] | null
           potential_rating: number
+          release_clause?: number | null
+          salary?: number
           team?: number | null
         }
         Update: {
+          age?: number
+          base_market_value?: number
+          base_rating?: number
+          contract_length?: number
+          contract_role?: Database['public']['Enums']['roles'] | null
           created_at?: string
-          firstname?: string | null
+          current_market_value?: number
+          current_rating?: number
+          first_name?: string | null
           id?: number
-          lastname?: string
+          last_name?: string
+          loaned_in?: boolean
+          loaned_out?: boolean
           overall_rating?: number
+          position?: Database['public']['Enums']['positions'][] | null
           potential_rating?: number
+          release_clause?: number | null
+          salary?: number
           team?: number | null
         }
         Relationships: [
@@ -101,7 +137,25 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      positions:
+        | 'GK'
+        | 'RB'
+        | 'RWB'
+        | 'CB'
+        | 'LB'
+        | 'LWB'
+        | 'CDM'
+        | 'CM'
+        | 'CAM'
+        | 'RM'
+        | 'RW'
+        | 'LM'
+        | 'LW'
+        | 'RF'
+        | 'CF'
+        | 'LF'
+        | 'ST'
+      roles: 'Future' | 'Sporadic' | 'Rotation' | 'Important' | 'Crucial'
     }
     CompositeTypes: {
       [_ in never]: never

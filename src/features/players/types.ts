@@ -1,10 +1,5 @@
-export type Player = {
-  id: number
-  firstname: string
-  lastname: string
-  overall_rating: number
-  potential_rating: number
-  team: number | null
-}
+import { Tables } from '@/server/supabase'
+
+export type Player = Tables<'players'>
 
 export type NewPlayer = Omit<Player, 'id'>
