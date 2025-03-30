@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import { NewPlayer } from './types'
+import { NewPlayer, UpdatePlayer } from './types'
 
 const API_URL = 'http://localhost:3000/api/players'
 
@@ -56,4 +56,26 @@ const deletePlayer = async (id: number) => {
 export const deletePlayerQueryOptions = {
   mutationKey: ['players', 'delete'],
   mutationFn: (id: number) => deletePlayer(id),
+}
+
+const updatePlayer = async (id: number, player: UpdatePlayer) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(player),
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.error)
+  }
+
+  return response.json()
+}
+
+export const updatePlayerQueryOptions = {
+  mutationKey: ['players', 'update'],
+  mutationFn: (id: number, player: UpdatePlayer) => updatePlayer(id, player),
 }

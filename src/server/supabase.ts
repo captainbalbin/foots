@@ -54,6 +54,7 @@ export type Database = {
           potential_rating: number
           release_clause: number | null
           salary: number
+          shirt_number: number | null
           team: number | null
         }
         Insert: {
@@ -75,6 +76,7 @@ export type Database = {
           potential_rating: number
           release_clause?: number | null
           salary?: number
+          shirt_number?: number | null
           team?: number | null
         }
         Update: {
@@ -96,6 +98,7 @@ export type Database = {
           potential_rating?: number
           release_clause?: number | null
           salary?: number
+          shirt_number?: number | null
           team?: number | null
         }
         Relationships: [

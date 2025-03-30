@@ -5,6 +5,8 @@ import {
   ChangeCell,
   CurrencyCell,
   CurrencyChangeCell,
+  EditableCell,
+  LinkCell,
   RatingCell,
 } from './cells'
 
@@ -21,11 +23,25 @@ export const columns: ColumnDef<Player>[] = [
   {
     accessorKey: 'first_name',
     header: 'First Name',
+    cell: ({ row }) => {
+      const firstName: string = row.getValue('first_name')
+
+      return (
+        <LinkCell name={firstName} path={`/players/${row.getValue('id')}`} />
+      )
+    },
     size: 150,
   },
   {
     accessorKey: 'last_name',
     header: 'Last Name',
+    cell: ({ row }) => {
+      const lastName: string = row.getValue('last_name')
+
+      return (
+        <LinkCell name={lastName} path={`/players/${row.getValue('id')}`} />
+      )
+    },
     size: 150,
   },
   {
@@ -41,7 +57,12 @@ export const columns: ColumnDef<Player>[] = [
   {
     accessorKey: 'age',
     header: 'Age',
-    size: 50,
+    cell: ({ row }) => {
+      const age: string = row.getValue('age')
+      const id: number = row.getValue('id')
+
+      return <EditableCell rowId={id} displayValue={age} />
+    },
   },
   {
     accessorKey: 'current_rating',

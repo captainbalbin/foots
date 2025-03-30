@@ -165,6 +165,23 @@ app.delete('api/players/:playerId', async (c) => {
   return c.json(data)
 })
 
+app.patch('api/players/:playerId', async (c) => {
+  const playerId = Number(c.req.param('playerId'))
+  const playerFields = await c.req.json()
+
+  const { data, error } = await supabase
+    .from('players')
+    .update({ ...playerFields })
+    .eq('id', playerId)
+
+  if (error) {
+    console.error(error.message)
+    return c.json({ error: error.message }, 500)
+  }
+
+  return c.json(data)
+})
+
 Bun.serve({
   fetch(req) {
     return app.fetch(req)

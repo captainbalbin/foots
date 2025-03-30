@@ -1,5 +1,9 @@
 import colors from 'tailwindcss/colors'
 import chroma from 'chroma-js'
+import { Link } from '@tanstack/react-router'
+import { useState } from 'react'
+import { useUpdatePlayer } from '../players/useUpdatePlayer'
+import { Input } from '@/components/ui/input'
 
 const getRatingColor = (r: number) => {
   switch (true) {
@@ -85,4 +89,67 @@ export const CurrencyChangeCell = ({
 
 export const BooleanCell = ({ value }: { value: boolean }) => {
   return <span>{value ? 'Yes' : 'No'}</span>
+}
+
+export const LinkCell = ({ path, name }: { path: string; name: string }) => {
+  return (
+    <Link to="/players/$playerId" params={{ playerId: path }}>
+      {name}
+    </Link>
+  )
+}
+
+export const EditableCell = ({
+  rowId,
+  displayValue,
+}: {
+  rowId: number
+  displayValue: string
+}) => {
+  const [active, setActive] = useState(false)
+  const [value, setValue] = useState<string>(displayValue)
+  const { updatePlayer, updatePlayerLoading } = useUpdatePlayer()
+
+  const handleInput = () => {
+    if (!rowId) {
+      setActive(false)
+      return
+    }
+
+    updatePlayer({
+      id: rowId,
+      player: {
+        age: Number(value),
+      },
+    })
+
+    setActive(false)
+  }
+
+  if (!active) {
+    return <span onDoubleClick={() => setActive(true)}>{displayValue}</span>
+  }
+
+  if (updatePlayerLoading) {
+    return <span>Loading...</span>
+  }
+
+  return (
+    <Input
+      type="number"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          handleInput()
+        } else if (e.key === 'Escape') {
+          setActive(false)
+        }
+      }}
+      onFocus={(e) => e.target.select()}
+      onBlur={() => setActive(false)}
+      enterKeyHint="done"
+      autoFocus
+    />
+  )
 }
