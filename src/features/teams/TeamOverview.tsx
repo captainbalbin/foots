@@ -1,4 +1,6 @@
-import { Player } from '../players/types'
+import { Player } from '@/features/players/types'
+import { DataTable } from '@/features/table/data-table'
+import { columns } from '@/features/table/columns'
 import { useActiveTeam } from './useActiveTeam'
 import { useTeamPlayers } from './useTeamPlayers'
 
@@ -26,7 +28,8 @@ export const TeamOverview = () => {
     <div>
       <h1>Team Overview</h1>
       <p>Active team: {activeTeam?.name}</p>
-      {teamPlayers?.map((player: Player) => {
+      <DataTable columns={columns} data={teamPlayers ?? []} />
+      {/* {teamPlayers?.map((player: Player) => {
         return (
           <div key={player.id}>
             <h2>
@@ -49,7 +52,7 @@ export const TeamOverview = () => {
             <p>Team: {player.team}</p>
           </div>
         )
-      })}
+      })} */}
     </div>
   )
 }
