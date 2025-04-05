@@ -1,10 +1,9 @@
-import { useState } from 'react'
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-  SortingState,
+  getSortedRowModel,
 } from '@tanstack/react-table'
 import {
   Table,
@@ -26,15 +25,18 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
-
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
-    state: {
-      sorting,
+    getSortedRowModel: getSortedRowModel(),
+    initialState: {
+      sorting: [
+        {
+          id: 'last_name',
+          desc: false,
+        },
+      ],
     },
   })
 
@@ -66,8 +68,8 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+          {table.getSortedRowModel().rows?.length ? (
+            table.getSortedRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
