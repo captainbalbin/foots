@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bun --bun vite",
+    "dev": "bun server & bun app",
+    "app": "bun --bun vite",
     "server": "bun run --hot ./src/server/index.ts",
     "build": "vite build && tsc",
     "lint": "eslint .",

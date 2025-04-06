@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import { NewPlayer, UpdatePlayer } from './types'
+import { NewPlayer, Player, UpdatePlayer } from './types'
 
 const API_URL = 'http://localhost:3000/api/players'
 
@@ -79,3 +79,21 @@ export const updatePlayerQueryOptions = {
   mutationKey: ['players', 'update'],
   mutationFn: (id: number, player: UpdatePlayer) => updatePlayer(id, player),
 }
+
+const getPlayer = async (id: number) => {
+  const response = await fetch(`${API_URL}/${id}`)
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.error)
+  }
+
+  const player = await response.json()
+  return player as Player
+}
+
+export const playerQueryOptions = (id: number) =>
+  queryOptions({
+    queryKey: ['players', id],
+    queryFn: () => getPlayer(id),
+  })

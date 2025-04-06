@@ -102,12 +102,14 @@ export const LinkCell = ({ path, name }: { path: string; name: string }) => {
 export const EditableCell = ({
   rowId,
   displayValue,
+  children,
 }: {
   rowId: number
-  displayValue: string
+  displayValue: string | number
+  children?: React.ReactNode
 }) => {
   const [active, setActive] = useState(false)
-  const [value, setValue] = useState<string>(displayValue)
+  const [value, setValue] = useState<string | number>(displayValue)
   const { updatePlayer, updatePlayerLoading } = useUpdatePlayer()
 
   const handleInput = () => {
@@ -127,7 +129,7 @@ export const EditableCell = ({
   }
 
   if (!active) {
-    return <span onDoubleClick={() => setActive(true)}>{displayValue}</span>
+    return <div onDoubleClick={() => setActive(true)}>{children}</div>
   }
 
   if (updatePlayerLoading) {
@@ -136,7 +138,6 @@ export const EditableCell = ({
 
   return (
     <Input
-      type="number"
       value={value}
       onChange={(e) => setValue(e.target.value)}
       onKeyDown={(e) => {

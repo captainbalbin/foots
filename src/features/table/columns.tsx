@@ -25,10 +25,9 @@ export const columns: ColumnDef<Player>[] = [
     header: 'First Name',
     cell: ({ row }) => {
       const firstName: string = row.getValue('first_name')
+      const id: string = row.getValue('id')
 
-      return (
-        <LinkCell name={firstName} path={`/players/${row.getValue('id')}`} />
-      )
+      return <LinkCell name={firstName} path={id} />
     },
     size: 150,
   },
@@ -37,10 +36,9 @@ export const columns: ColumnDef<Player>[] = [
     header: 'Last Name',
     cell: ({ row }) => {
       const lastName: string = row.getValue('last_name')
+      const id: string = row.getValue('id')
 
-      return (
-        <LinkCell name={lastName} path={`/players/${row.getValue('id')}`} />
-      )
+      return <LinkCell name={lastName} path={id} />
     },
     size: 150,
   },
@@ -61,7 +59,11 @@ export const columns: ColumnDef<Player>[] = [
       const age: string = row.getValue('age')
       const id: number = row.getValue('id')
 
-      return <EditableCell rowId={id} displayValue={age} />
+      return (
+        <EditableCell rowId={id} displayValue={age}>
+          <div>{age}</div>
+        </EditableCell>
+      )
     },
   },
   {
@@ -80,7 +82,11 @@ export const columns: ColumnDef<Player>[] = [
     cell: ({ row }) => {
       const baseRating: number = row.getValue('base_rating')
 
-      return <RatingCell rating={baseRating} />
+      return (
+        <EditableCell rowId={row.getValue('id')} displayValue={baseRating}>
+          <RatingCell rating={baseRating} />
+        </EditableCell>
+      )
     },
     size: 100,
   },

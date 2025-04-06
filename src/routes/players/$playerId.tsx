@@ -1,3 +1,4 @@
+import { usePlayer } from '@/features/players/usePlayer'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/players/$playerId')({
@@ -7,5 +8,17 @@ export const Route = createFileRoute('/players/$playerId')({
 function RouteComponent() {
   const { playerId } = Route.useParams()
 
-  return <div>Hello /players/{playerId}!</div>
+  const { player, playerError, playerLoading } = usePlayer({
+    id: Number(playerId),
+  })
+
+  if (playerLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (playerError) {
+    return <div>Error: {playerError.message}</div>
+  }
+
+  return <div>Hello {player?.last_name}!</div>
 }
