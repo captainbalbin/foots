@@ -14,7 +14,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { ArrowUpDown } from 'lucide-react'
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -58,7 +58,13 @@ export function DataTable<TData, TValue>({
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                        {header.column.getIsSorted() === 'asc' ? (
+                          <ArrowUp className="ml-2 h-4 w-4" />
+                        ) : header.column.getIsSorted() === 'desc' ? (
+                          <ArrowDown className="ml-2 h-4 w-4" />
+                        ) : (
+                          <ArrowUpDown className="ml-2 h-4 w-4" />
+                        )}
                       </Button>
                     }
                   </TableHead>

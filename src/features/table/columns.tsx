@@ -9,6 +9,7 @@ import {
   LinkCell,
   RatingCell,
 } from './cells'
+import { Position, positionPriority, Role, rolePriority } from '@/lib/types'
 
 export const columns: ColumnDef<Player>[] = [
   {
@@ -51,6 +52,15 @@ export const columns: ColumnDef<Player>[] = [
       return position?.join('/') || null
     },
     size: 100,
+    sortingFn: (rowA, rowB) => {
+      const positionA: Position[] = rowA.getValue('position')
+      const positionB: Position[] = rowB.getValue('position')
+
+      const indexA = positionPriority.indexOf(positionA[0])
+      const indexB = positionPriority.indexOf(positionB[0])
+
+      return indexA - indexB
+    },
   },
   {
     accessorKey: 'age',
@@ -114,6 +124,15 @@ export const columns: ColumnDef<Player>[] = [
   {
     accessorKey: 'contract_role',
     header: 'Contract Role',
+    sortingFn: (rowA, rowB) => {
+      const roleA: Role = rowA.getValue('contract_role')
+      const roleB: Role = rowB.getValue('contract_role')
+
+      const indexA = rolePriority.indexOf(roleA)
+      const indexB = rolePriority.indexOf(roleB)
+
+      return indexA - indexB
+    },
   },
   {
     accessorKey: 'contract_length',

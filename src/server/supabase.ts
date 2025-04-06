@@ -38,7 +38,7 @@ export type Database = {
         Row: {
           age: number
           base_market_value: number
-          base_rating: number
+          base_rating: number | null
           contract_length: number
           contract_role: Database['public']['Enums']['roles'] | null
           created_at: string
@@ -49,9 +49,8 @@ export type Database = {
           last_name: string
           loaned_in: boolean
           loaned_out: boolean
-          overall_rating: number
           position: Database['public']['Enums']['positions'][] | null
-          potential_rating: number
+          potential_rating: number | null
           release_clause: number | null
           salary: number
           shirt_number: number | null
@@ -60,7 +59,7 @@ export type Database = {
         Insert: {
           age?: number
           base_market_value?: number
-          base_rating?: number
+          base_rating?: number | null
           contract_length?: number
           contract_role?: Database['public']['Enums']['roles'] | null
           created_at?: string
@@ -71,9 +70,8 @@ export type Database = {
           last_name: string
           loaned_in?: boolean
           loaned_out?: boolean
-          overall_rating: number
           position?: Database['public']['Enums']['positions'][] | null
-          potential_rating: number
+          potential_rating?: number | null
           release_clause?: number | null
           salary?: number
           shirt_number?: number | null
@@ -82,7 +80,7 @@ export type Database = {
         Update: {
           age?: number
           base_market_value?: number
-          base_rating?: number
+          base_rating?: number | null
           contract_length?: number
           contract_role?: Database['public']['Enums']['roles'] | null
           created_at?: string
@@ -93,9 +91,8 @@ export type Database = {
           last_name?: string
           loaned_in?: boolean
           loaned_out?: boolean
-          overall_rating?: number
           position?: Database['public']['Enums']['positions'][] | null
-          potential_rating?: number
+          potential_rating?: number | null
           release_clause?: number | null
           salary?: number
           shirt_number?: number | null
@@ -117,18 +114,21 @@ export type Database = {
           created_at: string
           id: number
           name: string | null
+          season: number | null
         }
         Insert: {
           active?: boolean
           created_at?: string
           id?: number
           name?: string | null
+          season?: number | null
         }
         Update: {
           active?: boolean
           created_at?: string
           id?: number
           name?: string | null
+          season?: number | null
         }
         Relationships: []
       }
@@ -158,7 +158,13 @@ export type Database = {
         | 'CF'
         | 'LF'
         | 'ST'
-      roles: 'Future' | 'Sporadic' | 'Rotation' | 'Important' | 'Crucial'
+      roles:
+        | 'Prospect'
+        | 'Future'
+        | 'Sporadic'
+        | 'Rotation'
+        | 'Important'
+        | 'Crucial'
     }
     CompositeTypes: {
       [_ in never]: never
