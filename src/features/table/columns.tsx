@@ -11,14 +11,18 @@ import {
 } from './cells'
 import { Position, positionPriority, Role, rolePriority } from '@/lib/types'
 
-export const columns: ColumnDef<Player>[] = [
+type PlayerColumnDef = ColumnDef<Player> & {
+  accessorKey: keyof Player
+}
+
+export const columns: PlayerColumnDef[] = [
   {
     accessorKey: 'id',
     header: 'ID',
     size: 50,
   },
   {
-    accessorKey: 'shirt_number',
+    accessorKey: 'kit_number',
     header: 'Shirt Number',
   },
   {

@@ -1,14 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
-import { Team } from './types'
+import { Team } from '@/server/pocketbase-types'
 import { useActivateTeam } from './useActivateTeam'
 import { useTeams } from './useTeams'
+import { TeamForm } from '../form'
 
 export const Teams = () => {
   const { teams, isPending, error } = useTeams()
   const { activateTeam, activating, activationError } = useActivateTeam()
 
-  const handleActivateTeam = (id: number) => {
+  const handleActivateTeam = (id: string) => {
     activateTeam(id)
   }
 
@@ -18,14 +19,15 @@ export const Teams = () => {
     return <div>Mutation error: {activationError.message}</div>
   }
 
-  if (error) {
-    return <div>Query error: {error.message}</div>
+  if (error || !teams) {
+    return <div>Query error: {error?.message}</div>
   }
 
   return (
     <div>
+      {/* <TeamForm /> */}
       {teams
-        .sort((a: Team, b: Team) => a.id - b.id)
+        // .sort((a: Team, b: Team) => a.id - b.id)
         .map((team: Team) => {
           return (
             <div key={team.id}>
