@@ -1,5 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
-import { NewPlayer, Player, UpdatePlayer } from './types'
+import { NewPlayer, UpdatePlayer } from './types'
+import { Player } from '@/server/pocketbase-types'
 
 const API_URL = 'http://localhost:3000/api/players'
 
@@ -14,7 +15,7 @@ const getPlayers = async () => {
   return response.json()
 }
 
-export const playersQueryOptions = queryOptions({
+export const playersQueryOptions = queryOptions<Player[]>({
   queryKey: ['players'],
   queryFn: getPlayers,
 })
@@ -41,7 +42,7 @@ export const createPlayerQueryOptions = {
   mutationFn: (player: NewPlayer) => createPlayer(player),
 }
 
-const deletePlayer = async (id: number) => {
+const deletePlayer = async (id: string) => {
   const response = await fetch(`${API_URL}/${id}`, {
     method: 'DELETE',
   })
@@ -55,10 +56,10 @@ const deletePlayer = async (id: number) => {
 
 export const deletePlayerQueryOptions = {
   mutationKey: ['players', 'delete'],
-  mutationFn: (id: number) => deletePlayer(id),
+  mutationFn: (id: string) => deletePlayer(id),
 }
 
-const updatePlayer = async (id: number, player: UpdatePlayer) => {
+const updatePlayer = async (id: string, player: UpdatePlayer) => {
   const response = await fetch(`${API_URL}/${id}`, {
     method: 'PATCH',
     headers: {
@@ -77,7 +78,7 @@ const updatePlayer = async (id: number, player: UpdatePlayer) => {
 
 export const updatePlayerQueryOptions = {
   mutationKey: ['players', 'update'],
-  mutationFn: (id: number, player: UpdatePlayer) => updatePlayer(id, player),
+  mutationFn: (id: string, player: UpdatePlayer) => updatePlayer(id, player),
 }
 
 const getPlayer = async (id: number) => {
@@ -93,7 +94,7 @@ const getPlayer = async (id: number) => {
 }
 
 export const playerQueryOptions = (id: number) =>
-  queryOptions({
+  queryOptions<Player>({
     queryKey: ['players', id],
     queryFn: () => getPlayer(id),
   })

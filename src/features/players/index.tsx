@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
-import { Player as PlayerType } from './types'
+import { type NewPlayer } from './types'
+import { type Player } from '@/server/pocketbase-types'
 import { useCreatePlayer } from './useCreatePlayer'
 import { usePlayers } from './usePlayers'
 import { useDeletePlayer } from './useDeletePlayer'
@@ -18,33 +19,37 @@ export const Players = () => {
   }
 
   const handleCreatePlayer = () => {
-    const newPlayer = {
-      firstname: 'John',
-      lastname: 'Doe',
-      overall_rating: 85,
-      potential_rating: 90,
-      team: null,
+    const newPlayer: NewPlayer = {
+      first_name: 'John',
+      last_name: 'Doe',
+      kit_numbers: [10],
+      position: ['ST'],
+      rating_overall: 75,
+      rating_potential: 80,
+      market_value: 1000000,
+      wage: 10000,
+      foot: 'R',
     }
 
     createPlayer(newPlayer)
   }
 
-  const handleDeletePlayer = (id: number) => {
+  const handleDeletePlayer = (id: string) => {
     deletePlayer(id)
   }
 
   return (
     <div>
       <Button onClick={handleCreatePlayer}>Create Player</Button>
-      {players?.map((player: PlayerType) => {
+      {players?.map((player: Player) => {
         return (
           <div key={player.id}>
             <h3>
-              {player.firstname} {player.lastname}
+              {player.first_name} {player.last_name}
             </h3>
-            <p>Overall Rating: {player.overall_rating}</p>
-            <p>Potential Rating: {player.potential_rating}</p>
-            <p>Team: {player.team}</p>
+            <p>Overall Rating: {player.rating_overall}</p>
+            <p>Potential Rating: {player.rating_potential}</p>
+            {/* <p>Team: {player.team}</p> */}
             <Button onClick={() => handleDeletePlayer(player.id)}>
               Delete Player
             </Button>

@@ -8,7 +8,7 @@ export const useUpdatePlayer = () => {
 
   const { mutate, isPending, error } = useMutation({
     ...updatePlayerQueryOptions,
-    mutationFn: ({ id, player }: { id: number; player: UpdatePlayer }) =>
+    mutationFn: ({ id, player }: { id: string; player: UpdatePlayer }) =>
       updatePlayerQueryOptions.mutationFn(id, player),
     onSuccess: (_, vars) => {
       queryClient.invalidateQueries({

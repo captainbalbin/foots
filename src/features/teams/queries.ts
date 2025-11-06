@@ -1,7 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { NewTeam } from './types'
-import { Team } from '@/server/pocketbase-types'
-import { Player } from '../players/types'
+import { Team, Player } from '@/server/pocketbase-types'
 
 const API_URL = 'http://localhost:3000/api'
 
@@ -79,11 +78,12 @@ const getPlayersByTeam = async (teamId?: string) => {
 }
 
 export const teamPlayersQueryOptions = (teamId?: string) =>
-  queryOptions({
+  queryOptions<Player[]>({
     queryKey: ['teams', teamId, 'players'],
     queryFn: () => getPlayersByTeam(teamId),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: false,
   })
 
 /* Create team */
