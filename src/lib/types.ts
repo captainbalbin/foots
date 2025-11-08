@@ -1,7 +1,4 @@
-import { Enums } from '@/server/supabase'
-
-export type Position = Enums<'positions'>
-export type Role = Enums<'roles'>
+import { Position, Role } from '@/server/pocketbase-types'
 
 export const positionPriority: Position[] = [
   'ST',

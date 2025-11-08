@@ -61,10 +61,6 @@ app.get('api/teams/:teamId', async (c) => {
 app.get('api/teams/:teamId/players', async (c) => {
   try {
     const teamId = c.req.param('teamId')
-    // const team = await pb.collection('teams').getOne<TeamExpand>(teamId, {
-    //   fields: 'id,expand',
-    //   expand: 'players',
-    // })
 
     const players = await pb.collection('player_stats').getFullList({
       filter: `team = "${teamId}"`,

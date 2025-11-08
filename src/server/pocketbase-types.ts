@@ -1,7 +1,32 @@
 import PocketBase from 'pocketbase'
 import type { RecordService } from 'pocketbase'
 
-type Position = 'ST' | 'LW' | 'RW' | 'CM' | 'CDM' | 'CB' | 'LB' | 'RB' | 'GK'
+export type Position =
+  | 'ST'
+  | 'LF'
+  | 'CF'
+  | 'RF'
+  | 'LW'
+  | 'LM'
+  | 'RW'
+  | 'RM'
+  | 'CAM'
+  | 'CM'
+  | 'CDM'
+  | 'LWB'
+  | 'LB'
+  | 'CB'
+  | 'RWB'
+  | 'RB'
+  | 'GK'
+
+export type Role =
+  | 'Crucial'
+  | 'Important'
+  | 'Rotation'
+  | 'Sporadic'
+  | 'Future'
+  | 'Prospect'
 
 export interface Player {
   id: string
@@ -16,6 +41,7 @@ export interface Player {
   kit_numbers: number[]
 }
 
+// TODO: separate types used in the application and types for the pocketbase records
 export interface PlayerExpand extends Player {
   expand: {
     country?: Country
