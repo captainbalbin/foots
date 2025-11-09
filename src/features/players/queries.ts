@@ -81,7 +81,7 @@ export const updatePlayerQueryOptions = {
   mutationFn: (id: string, player: UpdatePlayer) => updatePlayer(id, player),
 }
 
-const getPlayer = async (id: number) => {
+const getPlayer = async (id: string) => {
   const response = await fetch(`${API_URL}/${id}`)
 
   if (!response.ok) {
@@ -93,8 +93,10 @@ const getPlayer = async (id: number) => {
   return player as Player
 }
 
-export const playerQueryOptions = (id: number) =>
+export const playerQueryOptions = (id: string) =>
   queryOptions<Player>({
     queryKey: ['players', id],
     queryFn: () => getPlayer(id),
+    retry: false,
+    refetchOnWindowFocus: false,
   })

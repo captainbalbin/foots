@@ -9,7 +9,7 @@ function RouteComponent() {
   const { playerId } = Route.useParams()
 
   const { player, playerError, playerLoading } = usePlayer({
-    id: Number(playerId),
+    id: playerId,
   })
 
   if (playerLoading) {

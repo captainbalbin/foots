@@ -1,8 +1,15 @@
 import PocketBase from 'pocketbase'
 import type { RecordService } from 'pocketbase'
-import type { Player, PlayerStats, League, Country, Team } from '@/lib/types'
+import type {
+  Player,
+  PlayerStats,
+  League,
+  Country,
+  Team,
+  PlayerBase,
+} from '@/lib/types'
 
-export interface PlayerExpand extends Player {
+export interface PlayerBaseExpand extends PlayerBase {
   expand: {
     country?: Country
   }
@@ -40,7 +47,7 @@ export interface CountryExpand extends Country {
 
 export interface TypedPocketBase extends PocketBase {
   collection(idOrName: 'teams'): RecordService<TeamExpand[]>
-  collection(idOrName: 'players'): RecordService<PlayerExpand[]>
+  collection(idOrName: 'players'): RecordService<PlayerBase[]>
   collection(idOrName: 'leagues'): RecordService<LeagueExpand[]>
   collection(idOrName: 'countries'): RecordService<CountryExpand[]>
   collection(idOrName: 'player_stats'): RecordService<PlayerStatsExpand[]>

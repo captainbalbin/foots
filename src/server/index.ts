@@ -2,8 +2,12 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import pb from './pocketbase'
 
-import type { Team } from '@/lib/types'
-import type { TeamExpand } from './pocketbase-types'
+import { type Player, type Team } from '@/lib/types'
+import type {
+  PlayerBaseExpand,
+  PlayerStatsExpand,
+  TeamExpand,
+} from './pocketbase-types'
 
 const app = new Hono()
 
@@ -223,15 +227,54 @@ app.post('api/players', async (c) => {
  */
 app.get('api/players/:playerId', async (c) => {
   try {
-    const player = await pb
+    const playerId = c.req.param('playerId')
+
+    const playerBase = await pb
       .collection('players')
-      .getOne<Team>(c.req.param('playerId'), {
-        fields:
-          'id,firstname,lastname,position,age,county,overall,potential,team,market_value,wage,foot,release_clause,kit_number',
+      .getOne<PlayerBaseExpand>(playerId, {
+        expand: 'country',
       })
 
-    if (!player) {
+    if (!playerBase) {
       return c.json({ error: 'Player not found' }, 404)
+    }
+
+    const playerStats = await pb
+      .collection('player_stats')
+      .getFullList<PlayerStatsExpand>({
+        filter: `player = "${playerId}"`,
+        expand: 'team,on_loan',
+      })
+
+    if (playerStats?.length > 1) {
+      return c.json({ error: 'Multiple player stats found' }, 500)
+    }
+
+    const playerStat: PlayerStatsExpand | undefined = playerStats[0]
+
+    const player: Player = {
+      id: playerBase.id,
+      first_name: playerBase.first_name,
+      foot: playerBase.foot,
+      kit_numbers: playerBase.kit_numbers,
+      last_name: playerBase.last_name,
+      market_value_base: playerBase.market_value,
+      rating_base: playerBase.rating_overall,
+      rating_potential: playerBase.rating_potential,
+      wage_base: playerBase.wage,
+      position: playerBase.position,
+      country: playerBase?.expand?.country?.name,
+
+      age: playerStat?.age,
+      kit_number: playerStat?.kit_number,
+      market_value_current: playerStat?.market_value,
+      rating_current: playerStat?.market_value,
+      wage_current: playerStat?.wage,
+      contract_length: playerStat?.contract_length,
+      contract_role: playerStat?.role,
+      release_clause: playerStat?.release_clause,
+      team: playerStat?.expand?.team?.name,
+      on_loan: playerStat?.expand?.on_loan?.name,
     }
 
     return c.json(player)

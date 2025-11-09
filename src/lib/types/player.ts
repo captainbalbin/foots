@@ -1,5 +1,3 @@
-import { Team } from './team'
-
 export type Position =
   | 'ST'
   | 'LF'
@@ -27,7 +25,7 @@ export type Role =
   | 'Future'
   | 'Prospect'
 
-export type Player = {
+export type PlayerBase = {
   id: string
   first_name: string
   last_name: string
@@ -38,6 +36,7 @@ export type Player = {
   wage: number
   foot: 'L' | 'R'
   kit_numbers: number[]
+  country?: string
 }
 
 export type PlayerStats = {
@@ -52,5 +51,22 @@ export type PlayerStats = {
   release_clause?: number
   contract_length?: number
   role?: number
-  on_loan?: Team
+  on_loan?: string
 }
+
+export type Player = Omit<
+  PlayerBase,
+  'wage' | 'rating_overall' | 'market_value'
+> &
+  Omit<
+    PlayerStats,
+    'id' | 'date' | 'wage' | 'rating' | 'market_value' | 'role'
+  > & {
+    wage_base: PlayerBase['wage']
+    wage_current?: PlayerStats['wage']
+    rating_base: PlayerBase['rating_overall']
+    rating_current?: PlayerStats['rating']
+    market_value_base: PlayerBase['market_value']
+    market_value_current?: PlayerStats['market_value']
+    contract_role?: PlayerStats['role']
+  }
