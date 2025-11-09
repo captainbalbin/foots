@@ -2,12 +2,13 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import pb from './pocketbase'
 
-import { type Player, type Team } from '@/lib/types'
+import { type Team } from '@/lib/types'
 import type {
   PlayerBaseExpand,
   PlayerStatsExpand,
   TeamExpand,
 } from './pocketbase-types'
+import { formatPlayer, formatPlayers } from '@/lib/utils'
 
 const app = new Hono()
 
@@ -146,14 +147,23 @@ app.put('api/teams/:teamId/activate', async (c) => {
  */
 app.get('api/players', async (c) => {
   try {
-    const players = await pb.collection('players').getFullList<Team>({
-      fields:
-        'id,firstname,lastname,position,age,county,overall,potential,team,market_value,wage,foot,release_clause,kit_number',
-    })
+    const playersBase = await pb
+      .collection('players')
+      .getFullList<PlayerBaseExpand>({
+        expand: 'country',
+      })
 
-    if (!players?.length) {
-      return c.json({ error: 'No teams found' }, 404)
+    if (!playersBase?.length) {
+      return c.json({ error: 'No players found' }, 404)
     }
+
+    const playersStats = await pb
+      .collection('player_stats')
+      .getFullList<PlayerStatsExpand>({
+        expand: 'team,on_loan,player',
+      })
+
+    const players = formatPlayers(playersBase, playersStats)
 
     return c.json(players)
   } catch (err: unknown) {
@@ -193,30 +203,7 @@ app.get('api/players/:playerId', async (c) => {
 
     const playerStat: PlayerStatsExpand | undefined = playerStats[0]
 
-    const player: Player = {
-      id: playerBase.id,
-      first_name: playerBase.first_name,
-      foot: playerBase.foot,
-      kit_numbers: playerBase.kit_numbers,
-      last_name: playerBase.last_name,
-      market_value_base: playerBase.market_value,
-      rating_base: playerBase.rating_overall,
-      rating_potential: playerBase.rating_potential,
-      wage_base: playerBase.wage,
-      position: playerBase.position,
-      country: playerBase?.expand?.country?.name,
-
-      age: playerStat?.age,
-      kit_number: playerStat?.kit_number,
-      market_value_current: playerStat?.market_value,
-      rating_current: playerStat?.market_value,
-      wage_current: playerStat?.wage,
-      contract_length: playerStat?.contract_length,
-      contract_role: playerStat?.role,
-      release_clause: playerStat?.release_clause,
-      team: playerStat?.expand?.team?.name,
-      on_loan: playerStat?.expand?.on_loan?.name,
-    }
+    const player = formatPlayer(playerBase, playerStat)
 
     return c.json(player)
   } catch (err: unknown) {
