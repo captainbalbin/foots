@@ -2,7 +2,6 @@ import colors from 'tailwindcss/colors'
 import chroma from 'chroma-js'
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
-import { useUpdatePlayer } from '../players/useUpdatePlayer'
 import { Input } from '@/components/ui/input'
 
 const getRatingColor = (r: number) => {
@@ -110,7 +109,6 @@ export const EditableCell = ({
 }) => {
   const [active, setActive] = useState(false)
   const [value, setValue] = useState<string | number>(displayValue)
-  const { updatePlayer, updatePlayerLoading } = useUpdatePlayer()
 
   const handleInput = () => {
     if (!rowId) {
@@ -118,22 +116,11 @@ export const EditableCell = ({
       return
     }
 
-    updatePlayer({
-      id: rowId,
-      player: {
-        // age: Number(value),
-      },
-    })
-
     setActive(false)
   }
 
   if (!active) {
     return <div onDoubleClick={() => setActive(true)}>{children}</div>
-  }
-
-  if (updatePlayerLoading) {
-    return <span>Loading...</span>
   }
 
   return (

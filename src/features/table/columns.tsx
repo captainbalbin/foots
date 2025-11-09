@@ -91,7 +91,7 @@ export const columns: PlayerColumnDef[] = [
     size: 100,
   },
   {
-    accessorKey: 'rating_overall',
+    accessorKey: 'rating_current',
     header: 'Base Rating',
     cell: ({ row }) => {
       const baseRating: number = row.getValue('base_rating')

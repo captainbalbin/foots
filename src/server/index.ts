@@ -107,48 +107,6 @@ app.get('api/teams/:teamId/players', async (c) => {
 })
 
 /**
- * Delete team by ID
- */
-app.delete('api/teams/:teamId', async (c) => {
-  try {
-    const teamId = c.req.param('teamId')
-
-    const team = await pb.collection('teams').getOne<Team>(teamId)
-
-    if (!team) {
-      return c.json({ error: 'Team not found' }, 404)
-    }
-
-    if (team.active) {
-      return c.json({ error: 'Cannot delete an active team' }, 400)
-    }
-
-    await pb.collection('teams').delete(teamId)
-  } catch (err: unknown) {
-    console.error(err)
-
-    return c.json({ error: err ?? String(err) }, 500)
-  }
-
-  return c.json({ message: 'Team deleted successfully' })
-})
-
-/**
- * Create new team
- */
-app.post('api/teams', async (c) => {
-  try {
-    await pb.collection('teams').create(c.req.json())
-  } catch (err: unknown) {
-    console.error(err)
-
-    return c.json({ error: err ?? String(err) }, 500)
-  }
-
-  return c.json({ message: 'Team created successfully' })
-})
-
-/**
  * Activate team by ID
  */
 app.put('api/teams/:teamId/activate', async (c) => {
@@ -198,23 +156,6 @@ app.get('api/players', async (c) => {
     }
 
     return c.json(players)
-  } catch (err: unknown) {
-    console.error(err)
-
-    return c.json({ error: err ?? String(err) }, 500)
-  }
-})
-
-/**
- * Create new player
- */
-app.post('api/players', async (c) => {
-  try {
-    const player = await c.req.json()
-
-    await pb.collection('players').create(player)
-
-    return c.json({ message: 'Player created successfully' })
   } catch (err: unknown) {
     console.error(err)
 
@@ -275,47 +216,6 @@ app.get('api/players/:playerId', async (c) => {
       release_clause: playerStat?.release_clause,
       team: playerStat?.expand?.team?.name,
       on_loan: playerStat?.expand?.on_loan?.name,
-    }
-
-    return c.json(player)
-  } catch (err: unknown) {
-    console.error(err)
-
-    return c.json({ error: err ?? String(err) }, 500)
-  }
-})
-
-/**
- * Delete player by ID
- */
-app.delete('api/players/:playerId', async (c) => {
-  const playerId = c.req.param('playerId')
-
-  try {
-    const deletedPlayer = await pb.collection('players').delete(playerId)
-
-    return c.json(deletedPlayer)
-  } catch (err: unknown) {
-    console.error(err)
-
-    return c.json(
-      { error: err instanceof Error ? err.message : 'Internal server error' },
-      500
-    )
-  }
-})
-
-/**
- * Update player by ID
- */
-app.patch('api/players/:playerId', async (c) => {
-  try {
-    const player = await pb
-      .collection('players')
-      .getOne<Team>(c.req.param('playerId'))
-
-    if (!player) {
-      return c.json({ error: 'Player not found' }, 404)
     }
 
     return c.json(player)
