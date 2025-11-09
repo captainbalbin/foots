@@ -1,18 +1,18 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { Player } from '@/features/players/types'
+import { Player, PlayerStats, Position, Role } from '@/lib/types'
+import { positionPriority, rolePriority } from './column-priorities'
 import {
   BooleanCell,
-  ChangeCell,
+  // ChangeCell,
   CurrencyCell,
-  CurrencyChangeCell,
+  // CurrencyChangeCell,
   EditableCell,
   LinkCell,
   RatingCell,
 } from './cells'
-import { Position, positionPriority, Role, rolePriority } from '@/lib/types'
 
 type PlayerColumnDef = ColumnDef<Player> & {
-  accessorKey: keyof Player
+  accessorKey: keyof Player | keyof PlayerStats
 }
 
 export const columns: PlayerColumnDef[] = [
@@ -23,7 +23,7 @@ export const columns: PlayerColumnDef[] = [
   },
   {
     accessorKey: 'kit_number',
-    header: 'Shirt Number',
+    header: 'Kit Number',
   },
   {
     accessorKey: 'first_name',
@@ -51,7 +51,7 @@ export const columns: PlayerColumnDef[] = [
     accessorKey: 'position',
     header: 'Position',
     cell: ({ row }) => {
-      const position: string[] = row.getValue('position')
+      const position: Position[] = row.getValue('position')
 
       return position?.join('/') || null
     },
@@ -71,7 +71,7 @@ export const columns: PlayerColumnDef[] = [
     header: 'Age',
     cell: ({ row }) => {
       const age: string = row.getValue('age')
-      const id: number = row.getValue('id')
+      const id: string = row.getValue('id')
 
       return (
         <EditableCell rowId={id} displayValue={age}>
@@ -81,7 +81,7 @@ export const columns: PlayerColumnDef[] = [
     },
   },
   {
-    accessorKey: 'current_rating',
+    accessorKey: 'rating',
     header: 'Current Rating',
     cell: ({ row }) => {
       const currentRating: number = row.getValue('current_rating')
@@ -91,7 +91,7 @@ export const columns: PlayerColumnDef[] = [
     size: 100,
   },
   {
-    accessorKey: 'base_rating',
+    accessorKey: 'rating_overall',
     header: 'Base Rating',
     cell: ({ row }) => {
       const baseRating: number = row.getValue('base_rating')
@@ -104,19 +104,19 @@ export const columns: PlayerColumnDef[] = [
     },
     size: 100,
   },
+  // {
+  //   accessorKey: 'rating_change',
+  //   header: 'Rating Change',
+  //   cell: ({ row }) => {
+  //     const baseRating: number = row.getValue('base_rating')
+  //     const currentRating: number = row.getValue('current_rating')
+  //     const ratingChange = currentRating - baseRating
+  //     return <ChangeCell value={ratingChange} />
+  //   },
+  //   size: 100,
+  // },
   {
-    accessorKey: 'rating_change',
-    header: 'Rating Change',
-    cell: ({ row }) => {
-      const baseRating: number = row.getValue('base_rating')
-      const currentRating: number = row.getValue('current_rating')
-      const ratingChange = currentRating - baseRating
-      return <ChangeCell value={ratingChange} />
-    },
-    size: 100,
-  },
-  {
-    accessorKey: 'potential_rating',
+    accessorKey: 'rating_potential',
     header: 'Potential Rating',
     cell: ({ row }) => {
       const potentialRating: number = row.getValue('potential_rating')
@@ -126,7 +126,7 @@ export const columns: PlayerColumnDef[] = [
     size: 100,
   },
   {
-    accessorKey: 'contract_role',
+    accessorKey: 'role',
     header: 'Contract Role',
     sortingFn: (rowA, rowB) => {
       const roleA: Role = rowA.getValue('contract_role')
@@ -151,7 +151,7 @@ export const columns: PlayerColumnDef[] = [
     },
   },
   {
-    accessorKey: 'salary',
+    accessorKey: 'wage',
     header: 'Salary',
     cell: ({ row }) => {
       const salary: number = row.getValue('salary')
@@ -160,7 +160,7 @@ export const columns: PlayerColumnDef[] = [
     },
   },
   {
-    accessorKey: 'base_market_value',
+    accessorKey: 'market_value',
     header: 'Base Market Value',
     cell: ({ row }) => {
       const baseMarketValue: number = row.getValue('base_market_value')
@@ -169,7 +169,7 @@ export const columns: PlayerColumnDef[] = [
     },
   },
   {
-    accessorKey: 'current_market_value',
+    accessorKey: 'market_value',
     header: 'Current Market Value',
     cell: ({ row }) => {
       const currentMarketValue: number = row.getValue('current_market_value')
@@ -177,21 +177,21 @@ export const columns: PlayerColumnDef[] = [
       return <CurrencyCell value={currentMarketValue} />
     },
   },
-  {
-    accessorKey: 'market_value_change',
-    header: 'Market Value Change',
-    cell: ({ row }) => {
-      const baseMarketValue: number = row.getValue('base_market_value')
-      const currentMarketValue: number = row.getValue('current_market_value')
+  // {
+  //   accessorKey: 'market_value_change',
+  //   header: 'Market Value Change',
+  //   cell: ({ row }) => {
+  //     const baseMarketValue: number = row.getValue('base_market_value')
+  //     const currentMarketValue: number = row.getValue('current_market_value')
 
-      return (
-        <CurrencyChangeCell
-          base={baseMarketValue}
-          current={currentMarketValue}
-        />
-      )
-    },
-  },
+  //     return (
+  //       <CurrencyChangeCell
+  //         base={baseMarketValue}
+  //         current={currentMarketValue}
+  //       />
+  //     )
+  //   },
+  // },
   {
     accessorKey: 'release_clause',
     header: 'Release Clause',
@@ -202,7 +202,7 @@ export const columns: PlayerColumnDef[] = [
     },
   },
   {
-    accessorKey: 'loaned_out',
+    accessorKey: 'on_loan',
     header: 'Loaned Out',
     cell: ({ row }) => {
       const loanedOut: boolean = row.getValue('loaned_out')
@@ -210,13 +210,13 @@ export const columns: PlayerColumnDef[] = [
       return <BooleanCell value={loanedOut} />
     },
   },
-  {
-    accessorKey: 'loaned_in',
-    header: 'Loaned In',
-    cell: ({ row }) => {
-      const loanedIn: boolean = row.getValue('loaned_in')
+  // {
+  //   accessorKey: 'loaned_in',
+  //   header: 'Loaned In',
+  //   cell: ({ row }) => {
+  //     const loanedIn: boolean = row.getValue('loaned_in')
 
-      return <BooleanCell value={loanedIn} />
-    },
-  },
+  //     return <BooleanCell value={loanedIn} />
+  //   },
+  // },
 ]

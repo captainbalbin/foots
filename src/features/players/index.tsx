@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { type NewPlayer } from './types'
-import { type Player } from '@/server/pocketbase-types'
+import { type Player } from '@/lib/types'
 import { useCreatePlayer } from './useCreatePlayer'
 import { usePlayers } from './usePlayers'
 import { useDeletePlayer } from './useDeletePlayer'

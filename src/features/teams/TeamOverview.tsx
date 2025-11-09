@@ -2,6 +2,7 @@ import { DataTable } from '@/features/table/data-table'
 import { columns } from '@/features/table/columns'
 import { useActiveTeam } from './useActiveTeam'
 import { useTeamPlayers } from './useTeamPlayers'
+import { DateSelector } from '../dates/date-selector'
 
 export const TeamOverview = () => {
   const { activeTeam, activeTeamError, activeTeamLoading } = useActiveTeam()
@@ -15,8 +16,8 @@ export const TeamOverview = () => {
     return <div>Loading team players...</div>
   }
 
-  if (teamPlayersError) {
-    return <div>Error: {teamPlayersError.message}</div>
+  if (teamPlayersError || !teamPlayers?.length) {
+    return <div>Error: {teamPlayersError?.message}</div>
   }
 
   if (activeTeamError) {
@@ -27,7 +28,8 @@ export const TeamOverview = () => {
     <div>
       <h1>Team Overview</h1>
       <p>Active team: {activeTeam?.name}</p>
-      <DataTable columns={columns} data={teamPlayers ?? []} />
+      <DateSelector />
+      <DataTable columns={columns} data={teamPlayers} />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { teamQueryOptions } from './queries'
-import { Team } from '@/server/pocketbase-types'
+import { Team } from '@/lib/types'
 import { useTeams } from './useTeams'
 
 // TODO: should have it's own query to get the team filter based on active state

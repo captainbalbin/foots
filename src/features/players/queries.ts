@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { NewPlayer, UpdatePlayer } from './types'
-import { Player } from '@/server/pocketbase-types'
+import { Player } from '@/lib/types'
 
 const API_URL = 'http://localhost:3000/api/players'
 

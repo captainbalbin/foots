@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { NewTeam } from './types'
-import { Team, Player } from '@/server/pocketbase-types'
+import { Team, Player } from '@/lib/types'
 
 const API_URL = 'http://localhost:3000/api'
 

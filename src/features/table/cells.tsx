@@ -104,7 +104,7 @@ export const EditableCell = ({
   displayValue,
   children,
 }: {
-  rowId: number
+  rowId: string
   displayValue: string | number
   children?: React.ReactNode
 }) => {
@@ -121,7 +121,7 @@ export const EditableCell = ({
     updatePlayer({
       id: rowId,
       player: {
-        age: Number(value),
+        // age: Number(value),
       },
     })
 

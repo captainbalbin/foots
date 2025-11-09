@@ -1,4 +1,4 @@
-import { Position, Role } from '@/server/pocketbase-types'
+import { Position, Role } from '@/lib/types'
 
 export const positionPriority: Position[] = [
   'ST',

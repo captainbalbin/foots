@@ -1,7 +1,9 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import pb from './pocketbase'
-import { Team, TeamExpand } from './pocketbase-types'
+
+import type { Team } from '@/lib/types'
+import type { TeamExpand } from './pocketbase-types'
 
 const app = new Hono()
 

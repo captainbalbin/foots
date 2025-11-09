@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
-import { Team } from '@/server/pocketbase-types'
+import { Team } from '@/lib/types'
 import { useActivateTeam } from './useActivateTeam'
 import { useTeams } from './useTeams'
 
