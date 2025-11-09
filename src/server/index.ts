@@ -4,6 +4,7 @@ import pb from './pocketbase'
 
 import type { Team } from '@/lib/types'
 import type { TeamExpand } from './pocketbase-types'
+import { te } from 'date-fns/locale'
 
 const app = new Hono()
 
@@ -31,6 +32,25 @@ app.get('api/teams', async (c) => {
     console.error(err)
 
     return c.json({ error: err ?? String(err) }, 500)
+  }
+})
+
+/**
+ * Get active team
+ */
+app.get('api/teams/active', async (c) => {
+  try {
+    const team = await pb
+      .collection('teams')
+      .getFirstListItem<TeamExpand>('active=true')
+
+    if (!team) {
+      return c.json({ error: 'No active teams found' }, 404)
+    }
+
+    return c.json(team)
+  } catch (err) {
+    return c.json({ error: err }, 500)
   }
 })
 

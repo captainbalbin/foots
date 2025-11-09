@@ -5,14 +5,18 @@ import { useActiveTeam } from './useActiveTeam'
 export const useTeamPlayers = () => {
   const { activeTeam } = useActiveTeam()
 
-  const { data, error, isPending } = useQuery({
+  const { data, error, isPending, isLoading } = useQuery({
     ...teamPlayersQueryOptions(activeTeam?.id),
     enabled: !!activeTeam?.id,
   })
 
+  console.log(activeTeam)
+  console.log(isPending)
+  console.log(isLoading)
+
   return {
     teamPlayers: data,
-    teamPlayersLoading: isPending,
+    teamPlayersLoading: activeTeam ? isPending : isLoading,
     teamPlayersError: error,
   }
 }

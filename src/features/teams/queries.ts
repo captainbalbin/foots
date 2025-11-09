@@ -66,6 +66,27 @@ export const teamQueryOptions = (id?: string) =>
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
+const getActiveTeam = async () => {
+  const res = await fetch(`${API_URL}/teams/active`)
+
+  if (!res.ok) {
+    const error = await res.json()
+
+    throw new Error(error)
+  }
+
+  return await res.json()
+}
+
+export const activeTeamQueryOptions = () =>
+  queryOptions<Team>({
+    queryKey: ['teams', 'active'],
+    queryFn: () => getActiveTeam(),
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: false,
+  })
+
 const getPlayersByTeam = async (teamId?: string) => {
   const res = await fetch(`${API_URL}/teams/${teamId}/players`)
 
