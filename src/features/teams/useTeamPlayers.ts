@@ -10,10 +10,6 @@ export const useTeamPlayers = () => {
     enabled: !!activeTeam?.id,
   })
 
-  console.log(activeTeam)
-  console.log(isPending)
-  console.log(isLoading)
-
   return {
     teamPlayers: data,
     teamPlayersLoading: activeTeam ? isPending : isLoading,

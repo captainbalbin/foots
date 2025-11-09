@@ -4,7 +4,6 @@ import pb from './pocketbase'
 
 import type { Team } from '@/lib/types'
 import type { TeamExpand } from './pocketbase-types'
-import { te } from 'date-fns/locale'
 
 const app = new Hono()
 
