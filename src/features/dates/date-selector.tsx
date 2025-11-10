@@ -2,14 +2,11 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { DatePicker } from '@/components/ui/date-picker'
 import { Button } from '@/components/ui/button'
 import { useDate } from './useDate'
+import { isAfter, isBefore } from 'date-fns'
+import { defaultDate, maxDate } from '@/lib/constants'
 
-// stateful component for displaying and changing dates.
 export function DateSelector() {
-  const { currentDate, updateDate, prevMonth, nextMonth } = useDate()
-
-  function handleDatePickerChange(newDate: Date) {
-    updateDate(newDate)
-  }
+  const { date, setDate, prevMonth, nextMonth } = useDate()
 
   return (
     <div className="flex gap-1">
@@ -17,14 +14,16 @@ export function DateSelector() {
         variant="outline"
         onClick={() => prevMonth()}
         className="cursor-pointer"
+        disabled={!isAfter(date, defaultDate)}
       >
         <ChevronLeft />
       </Button>
-      <DatePicker date={currentDate} onChange={handleDatePickerChange} />
+      <DatePicker date={date} onChange={setDate} />
       <Button
         variant="outline"
         onClick={() => nextMonth()}
         className="cursor-pointer"
+        disabled={!isBefore(date, maxDate)}
       >
         <ChevronRight />
       </Button>

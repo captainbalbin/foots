@@ -7,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { defaultDate, maxDate } from '@/lib/constants'
 
 type DatePickerProps = {
   date?: Date
@@ -45,6 +46,9 @@ export function DatePicker({ date, onChange }: DatePickerProps) {
             onSelect={(date) => {
               handleChange(date)
             }}
+            startMonth={defaultDate}
+            endMonth={maxDate}
+            defaultMonth={defaultDate}
           />
         </PopoverContent>
       </Popover>
