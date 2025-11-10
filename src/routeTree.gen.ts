@@ -11,18 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as TeamsImport } from './routes/teams'
 import { Route as IndexImport } from './routes/index'
+import { Route as TeamsIndexImport } from './routes/teams/index'
 import { Route as PlayersIndexImport } from './routes/players/index'
+import { Route as TeamsTeamIdImport } from './routes/teams/$teamId'
 import { Route as PlayersPlayerIdImport } from './routes/players/$playerId'
 
 // Create/Update Routes
-
-const TeamsRoute = TeamsImport.update({
-  id: '/teams',
-  path: '/teams',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -30,9 +25,21 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const TeamsIndexRoute = TeamsIndexImport.update({
+  id: '/teams/',
+  path: '/teams/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PlayersIndexRoute = PlayersIndexImport.update({
   id: '/players/',
   path: '/players/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TeamsTeamIdRoute = TeamsTeamIdImport.update({
+  id: '/teams/$teamId',
+  path: '/teams/$teamId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,18 +60,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/teams': {
-      id: '/teams'
-      path: '/teams'
-      fullPath: '/teams'
-      preLoaderRoute: typeof TeamsImport
-      parentRoute: typeof rootRoute
-    }
     '/players/$playerId': {
       id: '/players/$playerId'
       path: '/players/$playerId'
       fullPath: '/players/$playerId'
       preLoaderRoute: typeof PlayersPlayerIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/teams/$teamId': {
+      id: '/teams/$teamId'
+      path: '/teams/$teamId'
+      fullPath: '/teams/$teamId'
+      preLoaderRoute: typeof TeamsTeamIdImport
       parentRoute: typeof rootRoute
     }
     '/players/': {
@@ -74,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayersIndexImport
       parentRoute: typeof rootRoute
     }
+    '/teams/': {
+      id: '/teams/'
+      path: '/teams'
+      fullPath: '/teams'
+      preLoaderRoute: typeof TeamsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -81,47 +95,63 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/teams': typeof TeamsRoute
   '/players/$playerId': typeof PlayersPlayerIdRoute
+  '/teams/$teamId': typeof TeamsTeamIdRoute
   '/players': typeof PlayersIndexRoute
+  '/teams': typeof TeamsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/teams': typeof TeamsRoute
   '/players/$playerId': typeof PlayersPlayerIdRoute
+  '/teams/$teamId': typeof TeamsTeamIdRoute
   '/players': typeof PlayersIndexRoute
+  '/teams': typeof TeamsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/teams': typeof TeamsRoute
   '/players/$playerId': typeof PlayersPlayerIdRoute
+  '/teams/$teamId': typeof TeamsTeamIdRoute
   '/players/': typeof PlayersIndexRoute
+  '/teams/': typeof TeamsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/teams' | '/players/$playerId' | '/players'
+  fullPaths:
+    | '/'
+    | '/players/$playerId'
+    | '/teams/$teamId'
+    | '/players'
+    | '/teams'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/teams' | '/players/$playerId' | '/players'
-  id: '__root__' | '/' | '/teams' | '/players/$playerId' | '/players/'
+  to: '/' | '/players/$playerId' | '/teams/$teamId' | '/players' | '/teams'
+  id:
+    | '__root__'
+    | '/'
+    | '/players/$playerId'
+    | '/teams/$teamId'
+    | '/players/'
+    | '/teams/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TeamsRoute: typeof TeamsRoute
   PlayersPlayerIdRoute: typeof PlayersPlayerIdRoute
+  TeamsTeamIdRoute: typeof TeamsTeamIdRoute
   PlayersIndexRoute: typeof PlayersIndexRoute
+  TeamsIndexRoute: typeof TeamsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TeamsRoute: TeamsRoute,
   PlayersPlayerIdRoute: PlayersPlayerIdRoute,
+  TeamsTeamIdRoute: TeamsTeamIdRoute,
   PlayersIndexRoute: PlayersIndexRoute,
+  TeamsIndexRoute: TeamsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,22 +165,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/teams",
         "/players/$playerId",
-        "/players/"
+        "/teams/$teamId",
+        "/players/",
+        "/teams/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/teams": {
-      "filePath": "teams.tsx"
-    },
     "/players/$playerId": {
       "filePath": "players/$playerId.tsx"
     },
+    "/teams/$teamId": {
+      "filePath": "teams/$teamId.tsx"
+    },
     "/players/": {
       "filePath": "players/index.tsx"
+    },
+    "/teams/": {
+      "filePath": "teams/index.tsx"
     }
   }
 }

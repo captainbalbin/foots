@@ -25,10 +25,11 @@ export const TeamOverview = () => {
   }
 
   return (
-    <div>
-      <h1>Team Overview</h1>
-      <p>Active team: {activeTeam?.name}</p>
-      <DateSelector />
+    <div className="flex flex-col p-4 gap-4">
+      <div className="flex flex-row justify-between items-center">
+        <h1 className="font-bold">{activeTeam?.name}</h1>
+        <DateSelector />
+      </div>
       <DataTable columns={columns} data={teamPlayers} />
     </div>
   )

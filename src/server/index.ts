@@ -88,16 +88,24 @@ app.get('api/teams/:teamId/players', async (c) => {
   try {
     const teamId = c.req.param('teamId')
 
-    const players = await pb.collection('player_stats').getFullList({
-      filter: `team = "${teamId}"`,
-      fields:
-        'id,player,team,age,position,overall,potential,market_value,wage,foot,release_clause,kit_number,expand',
-      expand: 'player',
-    })
+    const playersStats = await pb
+      .collection('player_stats')
+      .getFullList<PlayerStatsExpand>({
+        filter: `team = "${teamId}"`,
+        expand: 'team,on_loan,player',
+      })
 
-    if (!players) {
-      return c.json({ error: 'Team not found' }, 404)
+    const playersBase = await pb
+      .collection('players')
+      .getFullList<PlayerBaseExpand>({
+        expand: 'country',
+      })
+
+    if (!playersBase?.length) {
+      return c.json({ error: 'No players found' }, 404)
     }
+
+    const players = formatPlayers(playersBase, playersStats)
 
     return c.json(players)
   } catch (err: unknown) {

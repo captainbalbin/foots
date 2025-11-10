@@ -1,8 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { Player, PlayerStats, Position, Role } from '@/lib/types'
+import { Player, Position, Role } from '@/lib/types'
 import { positionPriority, rolePriority } from './column-priorities'
 import {
-  BooleanCell,
   // ChangeCell,
   CurrencyCell,
   // CurrencyChangeCell,
@@ -12,7 +11,7 @@ import {
 } from './cells'
 
 type PlayerColumnDef = ColumnDef<Player> & {
-  accessorKey: keyof Player | keyof PlayerStats
+  accessorKey: keyof Player
 }
 
 export const columns: PlayerColumnDef[] = [
@@ -32,7 +31,7 @@ export const columns: PlayerColumnDef[] = [
       const firstName: string = row.getValue('first_name')
       const id: string = row.getValue('id')
 
-      return <LinkCell name={firstName} path={id} />
+      return <LinkCell name={firstName} id={id} type="player" />
     },
     size: 150,
   },
@@ -43,7 +42,7 @@ export const columns: PlayerColumnDef[] = [
       const lastName: string = row.getValue('last_name')
       const id: string = row.getValue('id')
 
-      return <LinkCell name={lastName} path={id} />
+      return <LinkCell name={lastName} id={id} type="player" />
     },
     size: 150,
   },
@@ -81,20 +80,20 @@ export const columns: PlayerColumnDef[] = [
     },
   },
   {
-    accessorKey: 'rating',
+    accessorKey: 'rating_current',
     header: 'Current Rating',
     cell: ({ row }) => {
-      const currentRating: number = row.getValue('current_rating')
+      const currentRating: number = row.getValue('rating_current')
 
       return <RatingCell rating={currentRating} />
     },
     size: 100,
   },
   {
-    accessorKey: 'rating_current',
+    accessorKey: 'rating_base',
     header: 'Base Rating',
     cell: ({ row }) => {
-      const baseRating: number = row.getValue('base_rating')
+      const baseRating: number = row.getValue('rating_base')
 
       return (
         <EditableCell rowId={row.getValue('id')} displayValue={baseRating}>
@@ -119,14 +118,14 @@ export const columns: PlayerColumnDef[] = [
     accessorKey: 'rating_potential',
     header: 'Potential Rating',
     cell: ({ row }) => {
-      const potentialRating: number = row.getValue('potential_rating')
+      const potentialRating: number = row.getValue('rating_potential')
 
       return <RatingCell rating={potentialRating} />
     },
     size: 100,
   },
   {
-    accessorKey: 'role',
+    accessorKey: 'contract_role',
     header: 'Contract Role',
     sortingFn: (rowA, rowB) => {
       const roleA: Role = rowA.getValue('contract_role')
@@ -151,28 +150,28 @@ export const columns: PlayerColumnDef[] = [
     },
   },
   {
-    accessorKey: 'wage',
+    accessorKey: 'wage_current',
     header: 'Salary',
     cell: ({ row }) => {
-      const salary: number = row.getValue('salary')
+      const salary: number = row.getValue('wage_current')
 
       return <CurrencyCell value={salary} />
     },
   },
   {
-    accessorKey: 'market_value',
+    accessorKey: 'market_value_base',
     header: 'Base Market Value',
     cell: ({ row }) => {
-      const baseMarketValue: number = row.getValue('base_market_value')
+      const baseMarketValue: number = row.getValue('market_value_base')
 
       return <CurrencyCell value={baseMarketValue} />
     },
   },
   {
-    accessorKey: 'market_value',
+    accessorKey: 'market_value_current',
     header: 'Current Market Value',
     cell: ({ row }) => {
-      const currentMarketValue: number = row.getValue('current_market_value')
+      const currentMarketValue: number = row.getValue('market_value_current')
 
       return <CurrencyCell value={currentMarketValue} />
     },
@@ -203,11 +202,11 @@ export const columns: PlayerColumnDef[] = [
   },
   {
     accessorKey: 'on_loan',
-    header: 'Loaned Out',
+    header: 'On Loan',
     cell: ({ row }) => {
-      const loanedOut: boolean = row.getValue('loaned_out')
+      const loanedOut: string = row.getValue('on_loan')
 
-      return <BooleanCell value={loanedOut} />
+      return <LinkCell name={loanedOut} id={loanedOut} type="team" />
     },
   },
   // {

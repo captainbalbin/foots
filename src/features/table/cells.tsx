@@ -90,9 +90,19 @@ export const BooleanCell = ({ value }: { value: boolean }) => {
   return <span>{value ? 'Yes' : 'No'}</span>
 }
 
-export const LinkCell = ({ path, name }: { path: string; name: string }) => {
+export const LinkCell = ({
+  id,
+  name,
+  type,
+}: {
+  id: string
+  name: string
+  type: 'player' | 'team'
+}) => {
+  const link = type === 'player' ? '/players/$playerId' : '/teams/$teamId'
+
   return (
-    <Link to="/players/$playerId" params={{ playerId: path }}>
+    <Link to={link} params={{ playerId: id }}>
       {name}
     </Link>
   )
