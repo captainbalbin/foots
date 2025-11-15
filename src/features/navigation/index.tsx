@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
-import { DateSelector } from '../dates/date-selector'
 
 export const Nav = () => {
   const [activeLink, setActiveLink] = useState<number>(0)
@@ -25,7 +24,6 @@ export const Nav = () => {
           </Button>
         </Link>
       </div>
-      <DateSelector />
     </div>
   )
 }

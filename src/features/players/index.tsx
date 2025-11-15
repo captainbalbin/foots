@@ -13,10 +13,10 @@ export const Players = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {players?.map((player: Player) => {
         return (
-          <div key={player.id}>
+          <div key={player.id} className="bg-gray-800">
             <h3>
               {player.first_name} {player.last_name}
             </h3>

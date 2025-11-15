@@ -2,6 +2,7 @@ import { DataTable } from '@/features/table/data-table'
 import { columns } from '@/features/table/columns'
 import { useActiveTeam } from './useActiveTeam'
 import { useTeamPlayers } from './useTeamPlayers'
+import { DateSelector } from '../dates/date-selector'
 
 export const TeamOverview = () => {
   const { activeTeam, activeTeamError, activeTeamLoading } = useActiveTeam()
@@ -24,9 +25,10 @@ export const TeamOverview = () => {
   }
 
   return (
-    <div className="flex flex-col p-4 gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-row justify-between items-center">
         <h1 className="font-bold">{activeTeam?.name}</h1>
+        <DateSelector />
       </div>
       <DataTable columns={columns} data={teamPlayers} />
     </div>
