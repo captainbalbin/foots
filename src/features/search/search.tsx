@@ -29,7 +29,7 @@ export const Search = ({ onSearch, onClear }: SearchProps) => {
         onChange={handleSearch}
         type="search"
         size={1}
-        className="max-w-sm"
+        className="max-w-sm rounded-xl"
       />
       <Button
         type="button"

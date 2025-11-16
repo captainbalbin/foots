@@ -36,7 +36,10 @@ export type PlayerBase = {
   wage: number
   foot: 'L' | 'R'
   kit_numbers: number[]
-  country?: string
+  country?: {
+    name?: string
+    id?: string
+  }
 }
 
 export type PlayerStats = {
@@ -44,14 +47,20 @@ export type PlayerStats = {
   date: string
   age: number
   rating: number
-  team?: string
+  team?: {
+    name?: string
+    id?: string
+  }
   market_value: number
   wage: number
   kit_number: number
   release_clause?: number
   contract_length?: number
   role?: number
-  on_loan?: string
+  on_loan?: {
+    name?: string
+    id?: string
+  }
 }
 
 export type Player = Omit<

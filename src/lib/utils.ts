@@ -22,7 +22,10 @@ export function formatPlayer(
     rating_potential: playerBase.rating_potential,
     wage_base: playerBase.wage,
     position: playerBase.position,
-    country: playerBase?.expand?.country?.name,
+    country: {
+      name: playerBase?.expand?.country?.name,
+      id: playerBase.expand.country?.id,
+    },
 
     age: playerStat?.age,
     kit_number: playerStat?.kit_number,
@@ -32,8 +35,14 @@ export function formatPlayer(
     contract_length: playerStat?.contract_length,
     contract_role: playerStat?.role,
     release_clause: playerStat?.release_clause,
-    team: playerStat?.expand?.team?.name,
-    on_loan: playerStat?.expand?.on_loan?.name,
+    team: {
+      name: playerStat?.expand?.team?.name,
+      id: playerStat?.expand?.team?.id,
+    },
+    on_loan: {
+      name: playerStat?.expand?.on_loan?.name,
+      id: playerStat.expand.on_loan?.id,
+    },
   }
 
   return player
