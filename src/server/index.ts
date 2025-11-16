@@ -87,11 +87,13 @@ app.get('api/teams/:teamId', async (c) => {
 app.get('api/teams/:teamId/players', async (c) => {
   try {
     const teamId = c.req.param('teamId')
+    const dateQuery = c.req.query('date')
+    const date = dateQuery?.replace('T', ' ')
 
     const playersStats = await pb
       .collection('player_stats')
       .getFullList<PlayerStatsExpand>({
-        filter: `team = "${teamId}"`,
+        filter: `date <= "${date}" && team = "${teamId}"`,
         expand: 'team,on_loan,player',
       })
 
@@ -103,6 +105,13 @@ app.get('api/teams/:teamId/players', async (c) => {
 
     if (!playersBase?.length) {
       return c.json({ error: 'No players found' }, 404)
+    }
+
+    if (!playersStats?.length) {
+      return c.json(
+        { error: 'No player stats found for this team for this period' },
+        404
+      )
     }
 
     const players = formatPlayers(playersBase, playersStats)

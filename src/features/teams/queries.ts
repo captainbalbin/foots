@@ -86,8 +86,8 @@ export const activeTeamQueryOptions = () =>
     retry: false,
   })
 
-const getPlayersByTeam = async (teamId?: string) => {
-  const res = await fetch(`${API_URL}/teams/${teamId}/players`)
+const getPlayersByTeam = async (teamId?: string, date?: string) => {
+  const res = await fetch(`${API_URL}/teams/${teamId}/players?date=${date}`)
 
   if (!res.ok) {
     const error = await res.json()
@@ -97,10 +97,10 @@ const getPlayersByTeam = async (teamId?: string) => {
   return (await res.json()) as Player[]
 }
 
-export const teamPlayersQueryOptions = (teamId?: string) =>
+export const teamPlayersQueryOptions = (teamId?: string, date?: string) =>
   queryOptions<Player[]>({
-    queryKey: ['teams', teamId, 'players'],
-    queryFn: () => getPlayersByTeam(teamId),
+    queryKey: ['teams', teamId, 'players', date],
+    queryFn: () => getPlayersByTeam(teamId, date),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: false,
