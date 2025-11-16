@@ -25,7 +25,7 @@ export const TeamOverview = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       <div className="flex flex-row justify-between items-center">
         <h1 className="font-bold">{activeTeam?.name}</h1>
         <DateSelector />
