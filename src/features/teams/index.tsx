@@ -3,6 +3,8 @@ import { Loader2 } from 'lucide-react'
 import { Team } from '@/lib/types'
 import { useActivateTeam } from './useActivateTeam'
 import { useTeams } from './useTeams'
+import { Link } from '@tanstack/react-router'
+import { Spinner } from '@/components/ui/spinner'
 
 export const Teams = () => {
   const { teams, isPending, error } = useTeams()
@@ -12,7 +14,9 @@ export const Teams = () => {
     activateTeam(id)
   }
 
-  if (isPending) return <div>loading teams...</div>
+  if (isPending) {
+    return <Spinner />
+  }
 
   if (activationError) {
     return <div>Mutation error: {activationError.message}</div>
@@ -27,7 +31,9 @@ export const Teams = () => {
       {teams.map((team: Team) => {
         return (
           <div key={team.id}>
-            <p>{team.name}</p>
+            <Link to={team.id}>
+              <p>{team.name}</p>
+            </Link>
             {!team.active && (
               <Button
                 disabled={activating}

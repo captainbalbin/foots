@@ -1,28 +1,29 @@
 import { Button } from '@/components/ui/button'
 import { Link } from '@tanstack/react-router'
-import { useState } from 'react'
 
 export const Nav = () => {
-  const [activeLink, setActiveLink] = useState<number>(0)
-
   return (
     <div className="flex items-center justify-between w-full">
       <div className="p-2 flex gap-2">
-        <Link to="/" onClick={() => setActiveLink(0)}>
-          <Button variant={activeLink === 0 ? 'secondary' : 'ghost'}>
-            Home
-          </Button>
-        </Link>
-        <Link to="/teams" onClick={() => setActiveLink(1)}>
-          <Button variant={activeLink === 1 ? 'secondary' : 'ghost'}>
-            Teams
-          </Button>
-        </Link>
-        <Link to="/players" onClick={() => setActiveLink(2)}>
-          <Button variant={activeLink === 2 ? 'secondary' : 'ghost'}>
-            Players
-          </Button>
-        </Link>
+        {(
+          [
+            ['/', 'Home'],
+            ['/teams', 'Teams'],
+            ['/players', 'Players'],
+          ] as const
+        ).map(([to, label]) => {
+          return (
+            <Link to={to}>
+              {({ isActive }) => {
+                return (
+                  <Button variant={isActive ? 'secondary' : 'ghost'}>
+                    {label}
+                  </Button>
+                )
+              }}
+            </Link>
+          )
+        })}
       </div>
     </div>
   )

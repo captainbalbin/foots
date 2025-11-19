@@ -1,14 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Search } from '../search/search'
 import { usePlayers } from './usePlayers'
 import { List } from './list'
+import { Player } from '@/lib/types'
+import { Spinner } from '@/components/ui/spinner'
 
 export const Players = () => {
   const { players, playersError, playersLoading } = usePlayers()
-  const [filteredPlayers, setFilteredPlayers] = useState(players)
+  const [filteredPlayers, setFilteredPlayers] = useState<Player[] | undefined>(
+    undefined
+  )
+
+  useEffect(() => {
+    if (players) setFilteredPlayers(players)
+  }, [players])
 
   if (playersLoading) {
-    return <div>Loading...</div>
+    return <Spinner />
   }
 
   if (playersError) {

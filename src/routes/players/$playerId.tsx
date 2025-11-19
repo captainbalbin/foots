@@ -1,3 +1,4 @@
+import { Spinner } from '@/components/ui/spinner'
 import { usePlayer } from '@/features/players/usePlayer'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -13,7 +14,7 @@ function RouteComponent() {
   })
 
   if (playerLoading) {
-    return <div>Loading...</div>
+    return <Spinner />
   }
 
   if (playerError) {
