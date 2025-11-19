@@ -15,7 +15,7 @@ export const Players = () => {
     if (players) setFilteredPlayers(players)
   }, [players])
 
-  if (playersLoading) {
+  if (playersLoading || !filteredPlayers?.length) {
     return <Spinner />
   }
 
@@ -39,11 +39,7 @@ export const Players = () => {
   return (
     <div className="flex-1 flex flex-col gap-2">
       <Search onSearch={handleSearch} onClear={handleClear} />
-      {!filteredPlayers?.length ? (
-        <div>No players found</div>
-      ) : (
-        <List players={filteredPlayers} />
-      )}
+      <List players={filteredPlayers} />
     </div>
   )
 }

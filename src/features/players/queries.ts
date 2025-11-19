@@ -17,6 +17,9 @@ const getPlayers = async () => {
 export const playersQueryOptions = queryOptions<Player[]>({
   queryKey: ['players'],
   queryFn: getPlayers,
+  retry: false,
+  refetchOnWindowFocus: false,
+  staleTime: 3600 * 5,
 })
 
 const getPlayer = async (id: string) => {
@@ -37,4 +40,5 @@ export const playerQueryOptions = (id: string) =>
     queryFn: () => getPlayer(id),
     retry: false,
     refetchOnWindowFocus: false,
+    staleTime: 3600 * 5,
   })

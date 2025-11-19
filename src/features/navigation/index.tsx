@@ -16,7 +16,11 @@ export const Nav = () => {
             <Link to={to}>
               {({ isActive }) => {
                 return (
-                  <Button variant={isActive ? 'secondary' : 'ghost'}>
+                  <Button
+                    variant={isActive ? 'secondary' : 'ghost'}
+                    size={'sm'}
+                    className="cursor-pointer"
+                  >
                     {label}
                   </Button>
                 )
