@@ -204,9 +204,9 @@ export const columns: PlayerColumnDef[] = [
     accessorKey: 'on_loan',
     header: 'On Loan',
     cell: ({ row }) => {
-      const loanedOut: string = row.getValue('on_loan')
+      const loanedOut: { id: string; name: string } = row.getValue('on_loan')
 
-      return <LinkCell name={loanedOut} id={loanedOut} type="team" />
+      return <LinkCell name={loanedOut.name} id={loanedOut.id} type="team" />
     },
   },
   // {

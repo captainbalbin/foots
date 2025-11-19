@@ -100,9 +100,10 @@ export const LinkCell = ({
   type: 'player' | 'team'
 }) => {
   const link = type === 'player' ? '/players/$playerId' : '/teams/$teamId'
+  const param = type === 'player' ? { playerId: id } : { teamId: id }
 
   return (
-    <Link to={link} params={{ playerId: id }}>
+    <Link to={link} params={param}>
       {name}
     </Link>
   )

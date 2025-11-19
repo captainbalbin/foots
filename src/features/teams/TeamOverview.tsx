@@ -3,17 +3,14 @@ import { columns } from '@/features/table/columns'
 import { useActiveTeam } from './useActiveTeam'
 import { useTeamPlayers } from './useTeamPlayers'
 import { DateSelector } from '../dates/date-selector'
+import { Spinner } from '@/components/ui/spinner'
 
 export const TeamOverview = () => {
   const { activeTeam, activeTeamError, activeTeamLoading } = useActiveTeam()
   const { teamPlayers, teamPlayersError, teamPlayersLoading } = useTeamPlayers()
 
-  if (activeTeamLoading) {
-    return <div>Loading...</div>
-  }
-
-  if (teamPlayersLoading) {
-    return <div>Loading team players...</div>
+  if (activeTeamLoading || teamPlayersLoading) {
+    return <Spinner />
   }
 
   if (teamPlayersError || !teamPlayers?.length) {

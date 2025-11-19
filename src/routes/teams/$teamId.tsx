@@ -1,9 +1,18 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { Spinner } from '@/components/ui/spinner'
+import { useTeam } from '@/features/teams/useTeam'
+import { createFileRoute, useParams } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/teams/$teamId')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/teams/$teamId"!</div>
+  const { teamId } = useParams({ from: '/teams/$teamId' })
+  const { team, isPending } = useTeam(teamId)
+
+  if (isPending) {
+    return <Spinner />
+  }
+
+  return <div>{team?.name}</div>
 }
