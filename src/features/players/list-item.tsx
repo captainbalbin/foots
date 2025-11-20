@@ -15,7 +15,7 @@ export const ListItem = ({ player }: ListItemProps) => {
       >
         <div className="w-8 h-8 rounded-2xl bg-primary" />
         <div className="flex flex-col">
-          <div id="name-and-rating" className="flex items-center">
+          <div id="name-and-rating" className="flex items-center gap-2">
             <h2 className="font-semibold">
               {player.first_name} {player.last_name}
             </h2>

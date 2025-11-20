@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -108,7 +109,7 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --default-font-family: 'Walsheim', sans-serif;
+  --default-font-family: 'Manrope', sans-serif;
 }
 
 @layer base {
@@ -120,9 +121,6 @@
   }
 }
 
-@font-face {
-  font-family: 'Walsheim';
-  font-style: normal;
-  src: url(/src/lib/fonts/GT-Walsheim-Regular-Trial-BF651b7fc71a47d.otf)
-    format('otf');
+@theme {  
+  --font-display: "Manrope", sans-serif; 
 }
